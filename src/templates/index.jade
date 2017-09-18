@@ -1,0 +1,73 @@
+doctype
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui")
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name="apple-mobile-web-app-status-bar-style", content="black")
+    title My App
+    // Path to Framework7 Library CSS
+    link(rel="stylesheet", href="css/#{stylesheetFilename}.css")
+    link(rel="stylesheet", href="css/#{stylesheetColorsFilename}.css")
+    // Path to your custom app styles
+    link(rel="stylesheet", href="css/my-app.css")
+    
+    link(rel='stylesheet', href='css/iconfont.css')
+    link(rel='stylesheet', href='css/toast.css')
+    script(type='text/javascript ', src='js/jquery.min.js ')
+    script(type='text/javascript ', src='js/jquery.transit.min.js ')
+    script(type='text/javascript ', src='js/jquery.qrcode.min.js ')
+    script(type='text/javascript ', src='js/vue.min.js ')
+    
+  body
+    // Status bar overlay for fullscreen mode
+    .statusbar-overlay
+
+    // Panels overlay
+    .panel-overlay
+    // Left panel with reveal effect
+    .panel.panel-left.panel-reveal
+      .content-block
+        p Left panel content goes here
+    // Right panel with cover effect
+    .panel.panel-right.panel-cover
+      .content-block
+        p Right panel content goes here
+
+    // Views
+    .views
+      // Your main view, should have "view-main" class
+      .view.view-main
+        // Top Navbar
+        .navbar
+          .navbar-inner
+            .left.sliding
+              a(href="me.html").link
+                i.icon.icon-back
+                span Back
+            .center.sliding Delivery Order
+            .right
+              a(href="history.html").link
+                i.icon.icon-bars
+            .subnavbar.sliding
+              .buttons-row
+                a(href="#waiting").button.active.tab-link Waiting
+                a(href="#pickup").button.tab-link Pickup
+                a(href="#delivery").button.tab-link In Delivery
+        .pages.navbar-through
+          .page(data-page="index").with-subnavbar
+            .tabs-swipeable-wrap
+              .tabs
+                .page-content.pull-to-refresh-content.tab(id="waiting").active
+                  include order-content    
+                .page-content.pull-to-refresh-content.tab(id="pickup")
+                  include order-content
+                .page-content.pull-to-refresh-content.tab(id="delivery")
+                  include order-content
+                include user-login     
+
+    // Path to Framework7 Library JS
+    script(type="text/javascript", src="js/#{scriptFilename}.js")
+    // Path to your app js
+    script(type='text/javascript ', src='js/toast.js ')      
+    script(type="text/javascript", src="js/my-app.js")

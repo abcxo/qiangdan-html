@@ -1,0 +1,11 @@
+.navbar
+  .navbar-inner
+    .left.sliding
+      a(href="#").link.back
+        i.icon.icon-back
+        span Back
+    .center.sliding Delivery Order
+.pages.navbar-through
+  .page(data-page="history")
+    .page-content.pull-to-refresh-content(id="complete")
+      include order-content  

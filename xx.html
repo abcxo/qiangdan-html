@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script>
+    function read() {
+        input = document.getElementById('input-video');
+        file = input.files[0];
+        fr = new FileReader();
+        fr.onload = function () {
+            console.log("www");            
+            console.log(JSON.stringify(this.result));
+        };
+//        fr.readAsText(file);        
+console.log(file);
+        file.size = 10000;
+        fr.readAsDataURL(file);
+
+    }
+    </script>
+    </head>
+<body>
+    <input type="file"   id="input-video" onchange="read();">    
+</body>
+</html>

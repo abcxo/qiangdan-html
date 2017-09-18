@@ -1,0 +1,114 @@
+/* line 36, ../sass/my-app.scss */
+html {
+  height: 100%;
+}
+
+/* line 39, ../sass/my-app.scss */
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: tahoma,Century Schoolbook,Georgia,serif;
+  color: #666;
+  background-color: #eee;
+}
+/* line 46, ../sass/my-app.scss */
+body * {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* line 50, ../sass/my-app.scss */
+.navbar {
+  background: #C50B28;
+  color: white;
+}
+/* line 53, ../sass/my-app.scss */
+.navbar .icon {
+  background: white;
+}
+
+/* line 59, ../sass/my-app.scss */
+.list-content .list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+/* line 63, ../sass/my-app.scss */
+.list-content .list .item {
+  background-color: white;
+  margin-bottom: 12px;
+  padding: 0 12px 12px 12px;
+}
+/* line 67, ../sass/my-app.scss */
+.list-content .list .item .item-title {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #E4E5E6;
+  color: #B10318;
+  font-size: 18px;
+}
+/* line 77, ../sass/my-app.scss */
+.list-content .list .item .sub-2 {
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+/* line 81, ../sass/my-app.scss */
+.list-content .list .item .sub-2 .icon {
+  height: 38px;
+  width: 38px;
+}
+/* line 85, ../sass/my-app.scss */
+.list-content .list .item .sub-2 .block {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+/* line 92, ../sass/my-app.scss */
+.list-content .list .item .sub-2 .block .desc {
+  margin-top: 3px;
+  color: #20ABFF;
+}
+/* line 98, ../sass/my-app.scss */
+.list-content .list .item .sub-1 {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #E4E5E6;
+}
+/* line 102, ../sass/my-app.scss */
+.list-content .list .item .sub-1 .icon {
+  height: 20px;
+  width: 20px;
+}
+/* line 106, ../sass/my-app.scss */
+.list-content .list .item .sub-1 .title {
+  margin-left: 12px;
+}
+/* line 112, ../sass/my-app.scss */
+.list-content .list .item .action-content {
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 12px;
+}
+/* line 118, ../sass/my-app.scss */
+.list-content .list .item .action-content .price {
+  color: #B10318;
+  font-size: 18px;
+}
+/* line 122, ../sass/my-app.scss */
+.list-content .list .item .action-content .action {
+  border: 1px solid #B10318;
+  width: 110px;
+  height: 26px;
+  color: #B10318;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
