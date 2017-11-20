@@ -1,9 +1,6 @@
-/* line 36, ../sass/my-app.scss */
 html {
   height: 100%;
 }
-
-/* line 39, ../sass/my-app.scss */
 body {
   height: 100%;
   padding: 0;
@@ -12,83 +9,241 @@ body {
   color: #666;
   background-color: #eee;
 }
-/* line 46, ../sass/my-app.scss */
 body * {
   -webkit-font-smoothing: antialiased;
 }
-
-/* line 50, ../sass/my-app.scss */
+.with-statusbar-overlay .notifications {
+  padding-top: 0px!important;
+}
+.login-screen .page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+.login-screen .page-content .logo {
+  margin-top: 44px;
+  height: 88px;
+}
+.login-screen .page-content input {
+  font-size: 16px!important;
+  font-weight: 600 !important;
+  background-color: rgba(255, 255, 255, 0);
+  outline: none !important;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 1px solid #E4E5E6;
+  height: 44px;
+  width: 100%;
+  margin: 40px 40px 0px;
+  color: #666;
+}
+.login-screen .page-content input::placeholder {
+  color: #999;
+}
+.login-screen .page-content input:active,
+.login-screen .page-content input:focus {
+  border-color: #666;
+}
+.login-screen .page-content .login {
+  height: 44px;
+  width: 100%;
+  outline: none !important;
+  border: none;
+  background-color: #C50B28;
+  margin: 40px 40px 0px;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.login-screen .page-content .login:active {
+  background-color: #B10318;
+}
+.login-screen .page-content .sign {
+  margin-top: 12px;
+  width: 100%;
+  text-align: right;
+  font-size: 18px;
+}
+.sign-screen .page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 30px 30px;
+  background: white;
+}
+.sign-screen .page-content .close-icon {
+  align-self: flex-start;
+  margin-top: 12px;
+  margin-left: -12px;
+  color: #C50B28;
+}
+.sign-screen .page-content .avatar {
+  margin-top: 12px;
+  height: 60px;
+}
+.sign-screen .page-content input {
+  font-size: 16px!important;
+  font-weight: 600 !important;
+  background-color: rgba(255, 255, 255, 0);
+  outline: none !important;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 1px solid #E4E5E6;
+  height: 44px;
+  width: 100%;
+  margin: 20px 0px 0px;
+  color: #666;
+}
+.sign-screen .page-content input::placeholder {
+  color: #999;
+}
+.sign-screen .page-content input:active,
+.sign-screen .page-content input:focus {
+  border-color: #666;
+}
+.sign-screen .page-content .sign {
+  min-height: 44px;
+  height: 44px;
+  width: 100%;
+  outline: none !important;
+  border: none;
+  background-color: #C50B28;
+  margin: 40px 40px 0px;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.sign-screen .page-content .sign:active {
+  background-color: #B10318;
+}
 .navbar {
   background: #C50B28;
   color: white;
 }
-/* line 53, ../sass/my-app.scss */
 .navbar .icon {
+  font-size: 20px;
+  color: white;
+}
+.subnavbar {
   background: white;
 }
-
-/* line 59, ../sass/my-app.scss */
+.icon-fanhui {
+  font-size: 18px!important;
+}
+.icon-icon_didian {
+  font-size: 18px!important;
+  color: #FFBA57;
+}
+.icon-icon_geren_red {
+  color: #FF4C8D;
+}
+.icon-icon_shouji_blue {
+  color: #444bff;
+}
+.icon-icon_qidian {
+  color: #20ABFF;
+}
+.icon-shangpinmingzi {
+  color: #8B572A;
+}
+.icon-icon_meiyuan_grey {
+  color: #C70320;
+}
 .list-content .list {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-/* line 63, ../sass/my-app.scss */
 .list-content .list .item {
-  background-color: white;
+  background: white;
   margin-bottom: 12px;
   padding: 0 12px 12px 12px;
 }
-/* line 67, ../sass/my-app.scss */
 .list-content .list .item .item-title {
-  height: 40px;
+  height: 44px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #E4E5E6;
+  position: relative;
   color: #B10318;
   font-size: 18px;
 }
-/* line 77, ../sass/my-app.scss */
+.list-content .list .item .item-title:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: auto;
+  top: auto;
+  height: 1px;
+  width: 100%;
+  background-color: #c8c7cc;
+  display: block;
+  z-index: 15;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+html.pixel-ratio-2 .list-content .list .item .item-title:after {
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+html.pixel-ratio-3 .list-content .list .item .item-title:after {
+  -webkit-transform: scaleY(0.33);
+  transform: scaleY(0.33);
+}
 .list-content .list .item .sub-2 {
   height: 60px;
   display: flex;
   align-items: center;
 }
-/* line 81, ../sass/my-app.scss */
 .list-content .list .item .sub-2 .icon {
   height: 38px;
   width: 38px;
+  border-radius: 19px;
 }
-/* line 85, ../sass/my-app.scss */
 .list-content .list .item .sub-2 .block {
   margin-left: 12px;
   display: flex;
   flex-direction: column;
 }
-/* line 92, ../sass/my-app.scss */
 .list-content .list .item .sub-2 .block .desc {
   margin-top: 3px;
   color: #20ABFF;
 }
-/* line 98, ../sass/my-app.scss */
 .list-content .list .item .sub-1 {
   height: 60px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #E4E5E6;
+  position: relative;
 }
-/* line 102, ../sass/my-app.scss */
-.list-content .list .item .sub-1 .icon {
-  height: 20px;
-  width: 20px;
-}
-/* line 106, ../sass/my-app.scss */
 .list-content .list .item .sub-1 .title {
   margin-left: 12px;
 }
-/* line 112, ../sass/my-app.scss */
+.list-content .list .item .sub-1:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: auto;
+  top: auto;
+  height: 1px;
+  width: 100%;
+  background-color: #c8c7cc;
+  display: block;
+  z-index: 15;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+html.pixel-ratio-2 .list-content .list .item .sub-1:after {
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+html.pixel-ratio-3 .list-content .list .item .sub-1:after {
+  -webkit-transform: scaleY(0.33);
+  transform: scaleY(0.33);
+}
 .list-content .list .item .action-content {
   height: 78px;
   display: flex;
@@ -96,12 +251,10 @@ body * {
   justify-content: space-between;
   margin: 0 12px;
 }
-/* line 118, ../sass/my-app.scss */
 .list-content .list .item .action-content .price {
   color: #B10318;
   font-size: 18px;
 }
-/* line 122, ../sass/my-app.scss */
 .list-content .list .item .action-content .action {
   border: 1px solid #B10318;
   width: 110px;
@@ -111,4 +264,102 @@ body * {
   justify-content: center;
   align-items: center;
   border-radius: 4px;
+}
+.page[data-page='index'] .create-content {
+  z-index: 100;
+  bottom: 35px;
+  right: 20px;
+  background: #C50B28;
+  position: fixed;
+  height: 68px;
+  width: 68px;
+  border-radius: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-direction: column;
+}
+.page[data-page='create'] .create {
+  height: 44px;
+  width: calc(100% - 80px);
+  outline: none !important;
+  border: none;
+  background-color: #C50B28;
+  margin: 0 40px;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.page[data-page='create'] .create:active {
+  background-color: #B10318;
+}
+.page[data-page='me'] {
+  font-size: 16px;
+}
+.page[data-page='me'] .user-content .item-inner {
+  margin-top: 9px;
+}
+.page[data-page='me'] .user-content img {
+  width: 68px;
+  height: 68px;
+  border-radius: 34px;
+}
+.page[data-page='me'] .logout {
+  margin-top: 44px;
+  background: white;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.page[data-page='me'] .logout:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: auto;
+  right: auto;
+  height: 1px;
+  width: 100%;
+  background-color: #c8c7cc;
+  display: block;
+  z-index: 15;
+  -webkit-transform-origin: 50% 0%;
+  transform-origin: 50% 0%;
+}
+html.pixel-ratio-2 .page[data-page='me'] .logout:before {
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+html.pixel-ratio-3 .page[data-page='me'] .logout:before {
+  -webkit-transform: scaleY(0.33);
+  transform: scaleY(0.33);
+}
+.page[data-page='me'] .logout:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: auto;
+  top: auto;
+  height: 1px;
+  width: 100%;
+  background-color: #c8c7cc;
+  display: block;
+  z-index: 15;
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+html.pixel-ratio-2 .page[data-page='me'] .logout:after {
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+html.pixel-ratio-3 .page[data-page='me'] .logout:after {
+  -webkit-transform: scaleY(0.33);
+  transform: scaleY(0.33);
+}
+.list-block {
+  margin: 25px 0;
 }

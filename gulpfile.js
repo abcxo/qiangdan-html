@@ -314,6 +314,24 @@
         gulp.src(paths.source.root + 'my-app/my-app.css')
             .pipe(gulp.dest(paths.build.styles));
 
+        gulp.src(paths.source.root + 'my-app/iconfont.css')
+            .pipe(gulp.dest(paths.build.styles));
+		
+		gulp.src(paths.source.root + 'my-app/iconfont.ttf')
+            .pipe(gulp.dest(paths.build.styles));
+		gulp.src(paths.source.root + 'my-app/iconfont.eot')
+            .pipe(gulp.dest(paths.build.styles));
+
+        gulp.src(paths.source.root + 'my-app/iconfont.eot')
+            .pipe(gulp.dest(paths.build.styles));
+
+		gulp.src(paths.source.root + 'my-app/iconfont.svg')
+            .pipe(gulp.dest(paths.build.styles));
+
+		gulp.src(paths.source.root + 'my-app/iconfont.woff')
+            .pipe(gulp.dest(paths.build.styles));
+    
+
         gulp.src(paths.source.root + 'img/*.*')
             .pipe(gulp.dest(paths.build.root + 'img/'))
             .pipe(connect.reload());

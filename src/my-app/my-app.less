@@ -1,0 +1,361 @@
+@import "../less/ios/_mixins.less";
+@theme-color:#C50B28;
+
+@header-height:70px;
+@text-color:#666;
+@text-color-light:#999;
+@margin-min:40px;
+@margin-mix:20px;
+@margin-mix2:10px;
+@theme-color:#C50B28;
+@theme-color-dark:#B10318;
+@theme-color-light:#FFF6F8;
+@background-color:#eee;
+@blue-color:#20ABFF;
+@blue-color-dark: #444bff;
+@yellow-color:#FFBA57;
+@yellow-color-dark: #ff7c29;
+@gray-color:#eee;
+@gray-color-dark: #999;
+@pink-color:#FF4C8D;
+@line-color:#c8c7cc;
+
+@padding-0: 3px;
+@padding-1: 6px;
+@padding-2: 9px;
+@padding-3: 12px;
+@padding-4: 15px;
+@padding-5: 18px;
+@padding-6: 21px;
+@padding-7: 24px;
+
+@ts-0: 12px;
+@ts-1: 14px;
+@ts-2: 16px;
+@ts-3: 18px;
+
+@item-height:44px;
+@item-height-min:25px;
+
+
+html{
+    height: 100%;
+}
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    //font: @font-size "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: tahoma,Century Schoolbook,Georgia,serif;
+    //font-weight: 600 !important;
+    * {-webkit-font-smoothing: antialiased;}
+    color:@text-color;
+    background-color: @background-color;
+}
+
+
+.with-statusbar-overlay .notifications{
+    padding-top: 0px!important;
+}
+
+.login-screen{
+    .page-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        .logo{
+            margin-top: @item-height;
+            height:2*@item-height;
+        }
+        input{
+            font-size: 16px!important;
+            font-weight: 600 !important;
+            background-color: fade(white, 0);
+            outline: none !important;
+            border: none;
+            border-radius:0px;
+            border-bottom: 1px solid #E4E5E6;
+            height: @item-height;
+            width: 100%;
+            margin: @margin-min @margin-min 0px;
+            color: @text-color;
+            &::placeholder {
+                color: @text-color-light;
+            }
+            &:active, &:focus{
+                border-color: @text-color;
+            }
+        }
+        .login{
+            height: @item-height;
+            width: 100%;
+            outline: none !important;
+            border: none;
+            background-color: @theme-color;
+            margin: @margin-min @margin-min 0px;
+            color: white;
+            border-radius: 4px;
+            font-size: 16px;
+            &:active{
+                background-color: @theme-color-dark;
+            }
+        }
+        .sign{
+            margin-top: @padding-3;
+            width: 100%;
+            text-align: right;
+            font-size: @ts-3;
+        }
+    }
+
+}
+
+
+.sign-screen{
+    .page-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px 30px 30px;
+        background: white;
+        .close-icon{
+            align-self: flex-start;
+            margin-top: @padding-3;
+            margin-left: -@padding-3;
+            color:@theme-color;
+        }
+        .avatar{
+            margin-top: @padding-3;
+            height:60px;
+        }
+        input{
+            font-size: 16px!important;
+            font-weight: 600 !important;
+            background-color: fade(white, 0);
+            outline: none !important;
+            border: none;
+            border-radius:0px;
+            border-bottom: 1px solid #E4E5E6;
+            height: @item-height;
+            width: 100%;
+            margin: @margin-mix 0px 0px;
+            color: @text-color;
+            &::placeholder {
+                color: @text-color-light;
+            }
+            &:active, &:focus{
+                border-color: @text-color;
+            }
+        }
+        .sign{
+            min-height:@item-height;
+            height: @item-height;
+            width: 100%;
+            outline: none !important;
+            border: none;
+            background-color: @theme-color;
+            margin: @margin-min @margin-min 0px;
+            color: white;
+            border-radius: 4px;
+            font-size: 16px;
+            &:active{
+                background-color: @theme-color-dark;
+            }
+        }
+
+    }
+
+}
+
+
+
+
+.navbar{
+    background: @theme-color;
+    color:white;
+    .icon{
+        font-size:20px;
+        color:white;
+    }
+}
+
+.subnavbar{
+    background: white;
+}
+.icon-fanhui{
+    font-size:18px!important;
+}
+
+.icon-icon_didian{
+    font-size:18px!important;
+    color: @yellow-color;
+}
+
+.icon-icon_geren_red{
+    color:@pink-color;
+}
+
+.icon-icon_shouji_blue{
+    color: @blue-color-dark;
+}
+
+.icon-icon_qidian{
+    color: @blue-color;
+}
+.icon-shangpinmingzi{
+    color: #8B572A;
+}
+.icon-icon_meiyuan_grey{
+    color: #C70320;
+}
+
+.list-content{
+    .list{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        .item{
+            background: white;
+            margin-bottom: @padding-3;
+            padding: 0 @padding-3 @padding-3 @padding-3;
+            .item-title{
+                height:@item-height;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                .hairline(bottom,@line-color);
+                color:@theme-color-dark;
+                font-size: 18px;
+            }
+            .sub-2{
+                height:60px;
+                display: flex;
+                align-items: center;
+                .icon{
+                    height:38px;
+                    width:38px;
+                    border-radius: 19px;
+                }
+                .block{
+                    margin-left: @padding-3;
+                    display: flex;
+                    flex-direction: column;
+                    .title{
+
+                    }
+                    .desc{
+                        margin-top: @padding-0;
+                        color:@blue-color;
+                    }
+                }
+            }
+            .sub-1{
+                height:60px;
+                display: flex;
+                align-items: center;
+                .icon{
+
+                }
+                .title{
+                    margin-left: @padding-3;
+                }
+                position: relative;
+                .hairline(bottom,@line-color);
+            }
+            .action-content{
+                height:78px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin: 0 @padding-3;
+                .price{
+                    color:@theme-color-dark;
+                    font-size:18px;
+                }
+                .action{
+                    border: 1px solid @theme-color-dark;
+                    width:110px;
+                    height:26px;
+                    color:@theme-color-dark;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 4px;
+                }
+            }
+
+        }
+    }
+
+}
+
+.page[data-page='index']{
+    .create-content{
+        z-index:100;
+        bottom:35px;
+        right:20px;
+        background:@theme-color;
+        position: fixed;
+        height:68px;
+        width:68px;
+        border-radius: 34px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color:white;
+        flex-direction: column;
+    }
+
+}
+
+.page[data-page='create']{
+    .create{
+        height: @item-height;
+        width: calc(~"100% - 80px");
+        outline: none !important;
+        border: none;
+        background-color: @theme-color;
+        margin:0 @margin-min;
+        color: white;
+        border-radius: 4px;
+        font-size: 16px;
+        &:active{
+            background-color: @theme-color-dark;
+        }
+    }
+}
+
+.page[data-page='me']{
+    font-size: @ts-2;
+    .user-content{
+        .item-inner{
+            margin-top: @padding-2;
+        }
+        img{
+            width:68px;
+            height:68px;
+            border-radius: 34px;
+        }
+    }
+
+    .logout{
+        margin-top: @item-height;
+        background: white;
+        height:@item-height;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        .hairline(top,@line-color);
+        .hairline(bottom,@line-color);
+    }
+
+}
+
+.list-block{
+    margin:@item-height-min 0;
+
+}

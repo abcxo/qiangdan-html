@@ -15,27 +15,35 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-// var host = 'http://www.dajitogo.com'
-var host = 'http://localhost:3100/m/'
+var host = 'http://198.211.112.76:3200/m/'
+//var host = 'http://localhost:3100/m/'
 
-
+var isBus = true;
 
 var isApp = typeof cordova !== 'undefined'
 
-var user = {
-    _id:"xxx",
-    name:"wefwfe"
-}
+var gUser;
+
+var pageRefresh
+
+
 function setItem(key, value) {
     if (isApp) {
-        NativeStorage.setItem(key, value, function (doc) {
-        }, function (error) {
-        });
+        NativeStorage.setItem(key, value);
     } else {
         localStorage.setItem(key, value)
     }
-
 }
+
+
+function removeItem(key) {
+    if (isApp) {
+        NativeStorage.remove(key);
+    } else {
+        localStorage.removeItem(key)
+    }
+}
+
 
 function getItem(key, callback) {
     if (isApp) {
@@ -51,35 +59,15 @@ function getItem(key, callback) {
 }
 
 function storeUser(obj) {
-    user._id = obj._id
-    user.name = obj.name
-    user.device = obj.device
-    user.token = obj.token
-    user.phone = obj.phone
-    user.password = obj.password
-    user.date = obj.date
-    setItem("user", JSON.stringify(user))
+    gUser = obj;
+    setItem("user", JSON.stringify(gUser))
 }
 
-if (isApp) {
-    document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady() {
-        document.addEventListener("backbutton", function (event) {
-            myApp.hideIndicator()
-            var modal = myApp.closeModal()
-            if (!modal) {
-                if (myApp.getCurrentView().history.length > 1) {
-                    myApp.getCurrentView().router.back()
-                } else {
-                    navigator.app.exitApp()
-                }
-            }
-        }, false);
-        userInit()
-    }
-} else {
-    userInit()
+function removeUser() {
+    delete gUser;
+    removeItem("user");
 }
+
 
 var onIndexPageInit= myApp.onPageInit('index', function (page) {
     console.log('index init')
@@ -108,37 +96,176 @@ var onIndexPageInit= myApp.onPageInit('index', function (page) {
 
     $$('#waiting').on('tab:show', function () {
         myApp.pullToRefreshTrigger(waitingPageRefresh);
+        pageRefresh = waitingPageRefresh;
     });
 
     $$('#pickup').on('tab:show', function () {
         myApp.pullToRefreshTrigger(pickupPageRefresh);
+        pageRefresh = pickupPageRefresh;
     });
 
     $$('#delivery').on('tab:show', function () {
         myApp.pullToRefreshTrigger(deliveryPageRefresh);
+        pageRefresh = deliveryPageRefresh;
     });
     myApp.pullToRefreshTrigger(waitingPageRefresh);
+    pageRefresh = waitingPageRefresh;
+
 })
 
-function userInit() {
-    console.log("user init");
+if (isApp) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+
+
+        setTimeout(function() {
+            navigator.splashscreen.hide();
+            window.FirebasePlugin.grantPermission();
+            window.FirebasePlugin.onNotificationOpen(function(notification) {
+                console.log(notification);
+                myApp.addNotification({"title":isBus?"Turbo Bussiness":"Turbo","message":notification.aps.alert,"hold":3000});
+                if(pageRefresh){
+                    myApp.pullToRefreshTrigger(pageRefresh);
+                }
+            }, function(error) {
+                console.error(error);
+            });
+            if(gUser){
+                closeLogin()
+            }
+
+        }, 2000);
+        document.addEventListener("backbutton", function (event) {
+            myApp.hideIndicator()
+            var modal = myApp.closeModal()
+            if (!modal) {
+                if (myApp.getCurrentView().history.length > 1) {
+                    myApp.getCurrentView().router.back()
+                } else {
+                    navigator.app.exitApp()
+                }
+            }
+        }, false);
+        userInit(true)
+    }
+} else {
+    userInit(true)
+
+}
+
+function toLogin(first) {
+    if(isApp){
+        StatusBar.styleDefault();
+        $$(".statusbar-overlay").css({"background":"#FFF"});
+    }
+    var loginVue = new Vue({
+        el: ".login-screen",
+        data: {
+            isBus:isBus,
+            name:"",
+            password:""
+        },
+        methods: {
+            onLogin:function () {
+                if(this.name.length>=6 && this.password.length>=6){
+                    myApp.showIndicator();
+                    $.get(host + "user/login", {isBus:isBus,name: this.name,password:this.password}, function (result) {
+                        myApp.hideIndicator();
+                        if(result.code == 200){
+                            storeUser(result.content);
+                            onIndexPageInit.trigger();
+                            closeLogin()
+                        }else{
+                            toast(result.message);
+                        }
+                    });
+                }else{
+                    toast("Name or password too short.");
+                }
+
+            },
+            onToSign:function () {
+                toSign()
+            }
+        }
+    });
+    myApp.loginScreen(".login-screen", true)
+}
+
+function closeLogin(){
+    if(isApp){
+        StatusBar.styleLightContent();
+        $$(".statusbar-overlay").css({"background":"#C50B28"});
+    }
+    myApp.closeModal(".login-screen", true);
+}
+
+function toSign() {
+    var signVue = new Vue({
+        el: ".sign-screen",
+        data: {
+            isBus:isBus,
+            user:{
+                name:"",
+                password:"",
+                shopName:"",
+                phone:"",
+                email:"",
+                address:"",
+            },
+        },
+        methods: {
+            onClose:function () {
+                myApp.closeModal(".sign-screen", true);
+            },
+            onSign:function () {
+                if(this.user.name.length>=6 &&
+                    this.user.password.length>=6 &&
+                    this.user.shopName.length>=6 &&
+                    this.user.phone.length>=6 &&
+                    this.user.email.length>=6 &&
+                    this.user.address.length>=6
+                ){
+                    myApp.showIndicator();
+                    $.post(host + "user/add?isBus="+isBus, {user:JSON.stringify(this.user)}, function (result) {
+                        myApp.hideIndicator();
+                        if(result.code == 200){
+                            storeUser(result.content);
+                            onIndexPageInit.trigger();
+                            myApp.closeModal(".sign-screen", true);
+                            closeLogin()
+                        }else{
+                            toast(result.message);
+                        }
+                    });
+                }else{
+                    toast("Please check input.");
+                }
+            }
+        }
+    });
+    myApp.popup(".sign-screen",true, true);
+}
+
+
+
+
+function userInit(first) {
     getItem('user', function (doc) {
-        console.log("user init"+doc);
         if (doc) {
-            user = JSON.parse(doc)
+            gUser = JSON.parse(doc)
             onIndexPageInit.trigger()
         } else {//需要先登录
-            // myApp.loginScreen(".login-screen", true)
+            toLogin(first);
         }
-
     })
 }
-onIndexPageInit.trigger()
 
 
 function loadOrder(type,content,array) {
-    $.get(host + "order", {uid: user._id,type:type}, function (result) {
+    $.get(host + "order/list", {uid: gUser._id,type:type}, function (result) {
         if(result.code == 200){
+            array.splice(0,array.length);
             array.push.apply(array, result.content);
         }else{
             toast(result.message);
@@ -154,29 +281,45 @@ var onMePageInit= myApp.onPageInit('me', function (page) {
     var vue = new Vue({
         el: "[data-page='me']",
         data: {
-
+            user:gUser
         },
-        methods: {}
-    });
+        methods: {
+            onLogout:function () {
+                myApp.showIndicator();
+                myApp.getCurrentView().router.back({
+                    url: 'index.html',
+                    force: true
+                });
+                removeUser();
+                setTimeout(function () {
+                    myApp.hideIndicator();
+                    userInit(false);
+                },0.5)
 
+
+            }
+        }
+    });
 })
 
 
 
-var onIndexPageInit= myApp.onPageInit('history', function (page) {
+var onHistoryPageInit= myApp.onPageInit('history', function (page) {
     console.log('history init')
     var vue = new Vue({
         el: "[data-page='history']",
         data: {
-            completes: []
+            orders: []
         },
         methods: {}
     });
     var completePageRefresh = $$("#complete.pull-to-refresh-content");
     completePageRefresh.on('refresh', function (event) {
-        loadOrder("complete",completePageRefresh,vue.completes);
+        loadOrder("complete",completePageRefresh,vue.orders);
     });
     myApp.pullToRefreshTrigger(completePageRefresh);
 })
+
+
 
 

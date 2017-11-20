@@ -1,0 +1,24 @@
+.item-title {{order.title}}
+.shop-content.sub-2
+  img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon(:src="order.shop.icon")
+  .block
+    .shop-title.title {{order.shop.title}}
+    a.shop-phone.desc(:href="'tel:'+order.shop.phone") {{order.shop.phone}}
+.consumer-content.sub-2
+  img.lazy.lazy-fadeIn.ks-demo-lazy.consumer-icon.icon(:src="order.consumer.icon")
+  .block
+    .consumer-title.title {{order.consumer.title}}
+    a.consumer-phone.desc(:href="'tel:'+order.consumer.phone") {{order.consumer.phone}}
+.source-content.sub-1
+  .source-icon.icon.iconfont.icon-icon_qidian
+  .source-title.title {{order.source.title}}
+.des-content.sub-1
+  .des-icon.icon.iconfont.icon-icon_didian
+  .des-title.title {{order.des.title}}
+.date-content.sub-1
+  .date-icon.icon.iconfont.icon-icon_shijian
+  .date-title.title {{order.date}}
+.action-content
+  .price ${{order.price}}
+  .action(v-if="order.state!='complete'||order.state!='cancel'") {{order.state=="waiting"?"Take Order":order.state=="pickup"?"Take Goods":order.state=="delivery"?"Complete":""}}
+//.mark  {{order.type}} 

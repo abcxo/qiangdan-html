@@ -1,0 +1,65 @@
+.navbar
+  .navbar-inner
+    .left.sliding
+      a(href="#").link.back
+        i.icon.iconfont.icon-fanhui
+    .center.sliding Create Order
+.pages.navbar-through
+  .page(data-page="create")
+    .page-content
+      .list-block
+        ul
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-shangpinmingzi
+              .item-inner
+                .item-input
+                  input(type='text', placeholder='Goods Name')
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_meiyuan_grey
+              .item-inner
+                .item-input
+                  input(type='number', placeholder='Price')
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_shijian
+              .item-inner
+                .item-input
+                  input(type='datetime-local', placeholder='Date')
+      .list-block
+        ul
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_geren_red
+              .item-inner
+                .item-input
+                  input(type='text', placeholder='Consumer')
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_shouji_blue
+              .item-inner
+                .item-input
+                  input(type='tel', placeholder='Phone')
+          li.align-top
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_didian
+              .item-inner
+                .item-input
+                  textarea.address(placeholder='Address')
+      .list-block
+        ul                  
+          li.align-top
+            .item-content
+              .item-inner
+                .item-input
+                  textarea.memo(placeholder='Leave Message')
+      button.create(@click="onCreate") OK                  
+      
+        

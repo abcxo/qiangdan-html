@@ -2,10 +2,33 @@
   .navbar-inner
     .left.sliding
       a(href="#").link.back
-        i.icon.icon-back
-        span Back
-    .center.sliding Delivery Order
+        i.icon.iconfont.icon-fanhui
+    .center.sliding Information
 .pages.navbar-through
   .page(data-page="me")
-    .page-content wfewefwef  
-  
+    .page-content
+      .list-block.media-list
+        ul
+          li
+            .item-content.user-content
+              .item-media
+                img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon(:src="user.icon?user.icon:'img/avatar-default.png'")
+              .item-inner
+                .item-title {{user.name}}
+                .item-subtitle   {{user.email}}
+      .list-block  
+        ul  
+          li
+            .item-content.display-content
+              .item-media
+                i.display-icon.icon.iconfont.icon-icon_geren_red
+              .item-inner
+                .item-title {{user.shopName}}
+          li
+            .item-content.phone-content
+              .item-media
+                i.phone-icon.icon.iconfont.icon-icon_shouji_blue
+              .item-inner
+                .item-title {{user.phone}}
+      .logout(@click="onLogout") Logout
+        

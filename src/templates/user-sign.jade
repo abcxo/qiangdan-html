@@ -1,0 +1,14 @@
+.popup.sign-screen
+  .view
+    .page
+      .page-content.sign-screen-content
+        i.close-icon.icon.iconfont.icon-icon-test(@click="onClose")
+        img.avatar(src='img/avatar-default.png')
+        input.name(placeholder="Account Name",v-model="user.name")
+        input.password(placeholder="Password",v-model="user.password")
+        input.shopName(placeholder="Shop Name",v-model="user.shopName")
+        input.phone(placeholder="Phone",type="tel",v-model="user.phone")
+        input.email(placeholder="Email",type="email",v-model="user.email")
+        input.address(placeholder="Address",v-model="user.address")
+        button.sign(@click="onSign") Sign Up
+        
