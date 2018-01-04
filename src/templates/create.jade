@@ -15,21 +15,21 @@
                 i.icon.iconfont.icon-shangpinmingzi
               .item-inner
                 .item-input
-                  input(type='text', placeholder='Goods Name')
+                  input(type='text', placeholder='Goods Name', v-model="order.title")
           li
             .item-content
               .item-media
                 i.icon.iconfont.icon-icon_meiyuan_grey
               .item-inner
                 .item-input
-                  input(type='number', placeholder='Price')
+                  input(type='number', placeholder='Price', v-model="order.price")
           li
             .item-content
               .item-media
                 i.icon.iconfont.icon-icon_shijian
               .item-inner
                 .item-input
-                  input(type='datetime-local', placeholder='Date')
+                  input(type='datetime-local', placeholder='Date', v-model="order.shipDate")
       .list-block
         ul
           li
@@ -38,28 +38,28 @@
                 i.icon.iconfont.icon-icon_geren_red
               .item-inner
                 .item-input
-                  input(type='text', placeholder='Consumer')
+                  input(type='text', placeholder='Consumer', v-model="order.consumer.name")
           li
             .item-content
               .item-media
                 i.icon.iconfont.icon-icon_shouji_blue
               .item-inner
                 .item-input
-                  input(type='tel', placeholder='Phone')
+                  input(type='tel', placeholder='Phone', v-model="order.consumer.phone")
           li.align-top
             .item-content
               .item-media
                 i.icon.iconfont.icon-icon_didian
               .item-inner
                 .item-input
-                  textarea.address(placeholder='Address')
+                  textarea.address(placeholder='Address', v-model="order.consumer.address.title")
       .list-block
         ul                  
           li.align-top
             .item-content
               .item-inner
                 .item-input
-                  textarea.memo(placeholder='Leave Message')
+                  textarea.memo(placeholder='Leave Message', v-model="order.memo")
       button.create(@click="onCreate") OK                  
       
         

@@ -16,7 +16,7 @@ var mainView = myApp.addView('.view-main', {
 });
 
 var host = 'http://198.211.112.76:3200/m/'
-//var host = 'http://localhost:3100/m/'
+// var host = 'http://192.168.31.35:3200/m/'
 
 var isBus = true;
 
@@ -69,6 +69,7 @@ function removeUser() {
 }
 
 
+
 var onIndexPageInit= myApp.onPageInit('index', function (page) {
     console.log('index init')
     var vue = new Vue({
@@ -78,7 +79,11 @@ var onIndexPageInit= myApp.onPageInit('index', function (page) {
             pickups: [],
             deliveries: [],
         },
-        methods: {}
+        methods: {
+            onCallPhone:function (phone) {
+                window.plugins.CallNumber.callNumber(null, null, phone, null);
+            }
+        }
     });
     var waitingPageRefresh = $$("#waiting.pull-to-refresh-content");
     var pickupPageRefresh = $$("#pickup.pull-to-refresh-content");
@@ -263,7 +268,7 @@ function userInit(first) {
 
 
 function loadOrder(type,content,array) {
-    $.get(host + "order/list", {uid: gUser._id,type:type}, function (result) {
+    $.get(host + "order/list", {isBus:isBus, userId: gUser._id,type:type}, function (result) {
         if(result.code == 200){
             array.splice(0,array.length);
             array.push.apply(array, result.content);
@@ -311,13 +316,77 @@ var onHistoryPageInit= myApp.onPageInit('history', function (page) {
         data: {
             orders: []
         },
-        methods: {}
+        methods: {
+            onCallPhone:function (phone) {
+                window.plugins.CallNumber.callNumber(null, null, phone, null);
+            }
+        }
     });
     var completePageRefresh = $$("#complete.pull-to-refresh-content");
     completePageRefresh.on('refresh', function (event) {
         loadOrder("complete",completePageRefresh,vue.orders);
     });
     myApp.pullToRefreshTrigger(completePageRefresh);
+})
+
+var onCreatePageInit= myApp.onPageInit('create', function (page) {
+    console.log('create init')
+    var vue = new Vue({
+        el: "[data-page='create']",
+        data: {
+            order:{
+                title:"",
+                shop:{
+                    _id:gUser._id,
+                    name:gUser.shopName,
+                    phone:gUser.phone,
+                    address:gUser.address
+                },
+                consumer:{
+                    name:"",
+                    phone:"",
+                    address:{
+                        title:"",
+                        lat:"",
+                        long:""
+                    }
+                },
+                shipDate:"",
+                price:"",
+                memo:"",
+                state:"waiting",
+                type:"normal"
+            }
+        },
+        methods: {
+            onSelectAddress:function () {
+
+            },
+            onCreate:function () {
+                if(this.order.title.length>4 &&
+                    this.order.price.length>0 &&
+                    this.order.shipDate.length>0 &&
+                    this.order.consumer.name.length>4 &&
+                    this.order.consumer.phone.length>4 &&
+                    this.order.consumer.address.title.length>4){
+                    myApp.showIndicator();
+                    $.post(host + "order/add", {order:JSON.stringify(this.order)}, function (result) {
+                        myApp.hideIndicator();
+                        if(result.code == 200){
+                            myApp.router.back();
+                            var waitingPageRefresh = $$("#waiting.pull-to-refresh-content");
+                            myApp.pullToRefreshTrigger(waitingPageRefresh)
+                        }else{
+                            toast(result.message);
+                        }
+                    });
+                }else{
+                    toast("Please fill Order conformation");
+                }
+
+            }
+        }
+    });
 })
 
 

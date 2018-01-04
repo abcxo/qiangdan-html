@@ -1,24 +1,25 @@
 .item-title {{order.title}}
 .shop-content.sub-2
-  img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon(:src="order.shop.icon")
+  img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon(:src="order.shop.icon?order.shop.icon:'img/avatar-default.png'")
   .block
-    .shop-title.title {{order.shop.title}}
-    a.shop-phone.desc(:href="'tel:'+order.shop.phone") {{order.shop.phone}}
+    .shop-title.title {{order.shop.shopName}}
+    a.shop-phone.desc(@click="onCallPhone(order.shop.phone)") {{order.shop.phone}}
 .consumer-content.sub-2
-  img.lazy.lazy-fadeIn.ks-demo-lazy.consumer-icon.icon(:src="order.consumer.icon")
+  img.lazy.lazy-fadeIn.ks-demo-lazy.consumer-icon.icon(:src="order.consumer.icon?order.consumer.icon:'img/avatar-default.png'")
   .block
-    .consumer-title.title {{order.consumer.title}}
-    a.consumer-phone.desc(:href="'tel:'+order.consumer.phone") {{order.consumer.phone}}
+    .consumer-title.title {{order.consumer.name}}
+    a.consumer-phone.desc(@click="onCallPhone(order.consumer.phone)") {{order.consumer.phone}}
 .source-content.sub-1
   .source-icon.icon.iconfont.icon-icon_qidian
-  .source-title.title {{order.source.title}}
+  .source-title.title {{order.shop.address.title}}
 .des-content.sub-1
   .des-icon.icon.iconfont.icon-icon_didian
-  .des-title.title {{order.des.title}}
+  .des-title.title {{order.consumer.address.title}}
 .date-content.sub-1
   .date-icon.icon.iconfont.icon-icon_shijian
-  .date-title.title {{order.date}}
+  .date-title.title {{order.shipDate}}
 .action-content
   .price ${{order.price}}
   .action(v-if="order.state!='complete'||order.state!='cancel'") {{order.state=="waiting"?"Take Order":order.state=="pickup"?"Take Goods":order.state=="delivery"?"Complete":""}}
+  .memo  {{order.memo}}     
 //.mark  {{order.type}} 
