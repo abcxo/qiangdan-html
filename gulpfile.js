@@ -297,26 +297,29 @@
 
         //shadow
         gulp.src(paths.source.root + 'my-app/vue.min.js')
-            .pipe(gulp.dest(paths.build.scripts));            
+            .pipe(gulp.dest(paths.build.scripts));
         gulp.src(paths.source.root + 'my-app/jquery.min.js')
-            .pipe(gulp.dest(paths.build.scripts));            
+            .pipe(gulp.dest(paths.build.scripts));
         gulp.src(paths.source.root + 'my-app/jquery.qrcode.min.js')
-            .pipe(gulp.dest(paths.build.scripts));            
+            .pipe(gulp.dest(paths.build.scripts));
         gulp.src(paths.source.root + 'my-app/jquery.transit.min.js')
-            .pipe(gulp.dest(paths.build.scripts));            
+            .pipe(gulp.dest(paths.build.scripts));
         gulp.src(paths.source.root + 'my-app/toast.js')
-            .pipe(gulp.dest(paths.build.scripts));                
+            .pipe(gulp.dest(paths.build.scripts));
+
+        gulp.src(paths.source.root + 'my-app/firebase.js')
+            .pipe(gulp.dest(paths.build.scripts));
 
         gulp.src(paths.source.root + 'my-app/toast.css')
-            .pipe(gulp.dest(paths.build.styles));                
-    
+            .pipe(gulp.dest(paths.build.styles));
+
 
         gulp.src(paths.source.root + 'my-app/my-app.css')
             .pipe(gulp.dest(paths.build.styles));
 
         gulp.src(paths.source.root + 'my-app/iconfont.css')
             .pipe(gulp.dest(paths.build.styles));
-		
+
 		gulp.src(paths.source.root + 'my-app/iconfont.ttf')
             .pipe(gulp.dest(paths.build.styles));
 		gulp.src(paths.source.root + 'my-app/iconfont.eot')
@@ -330,7 +333,7 @@
 
 		gulp.src(paths.source.root + 'my-app/iconfont.woff')
             .pipe(gulp.dest(paths.build.styles));
-    
+
 
         gulp.src(paths.source.root + 'img/*.*')
             .pipe(gulp.dest(paths.build.root + 'img/'))

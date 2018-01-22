@@ -3,12 +3,13 @@
     .page
       .page-content.sign-screen-content
         i.close-icon.icon.iconfont.icon-icon-test(@click="onClose")
-        img.avatar(src='img/avatar-default.png')
+        img.avatar(:src="user.icon?user.icon:'img/avatar-default.png'",@click="onAvatar")
+        input.uploadAvatar(type='file',style="display:none;",multiple accept="image/*",@change="onUploadAvatar")
         input.name(placeholder="Account Name",v-model="user.name")
         input.password(placeholder="Password",v-model="user.password")
         input.shopName(placeholder="Shop Name",v-model="user.shopName")
         input.phone(placeholder="Phone",type="tel",v-model="user.phone")
         input.email(placeholder="Email",type="email",v-model="user.email")
-        input.address(placeholder="Address",v-model="user.address")
+        input.address(placeholder="Address",v-model="user.address.title",@click="onSelectAddress",readonly)
         button.sign(@click="onSign") Sign Up
         

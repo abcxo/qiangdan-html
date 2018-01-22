@@ -6,5 +6,5 @@
         input.name(placeholder="Account Name",v-model="name")
         input.password(placeholder="Password",type="password",v-model="password")
         button.login(@click="onLogin") Sign In
-        a.sign(v-if='isBus',@click="onToSign") Sign Up
+        a.sign(v-show='isBus',@click="onToSign") Sign Up
 include user-sign

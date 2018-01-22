@@ -11,10 +11,10 @@
     a.consumer-phone.desc(@click="onCallPhone(order.consumer.phone)") {{order.consumer.phone}}
 .source-content.sub-1
   .source-icon.icon.iconfont.icon-icon_qidian
-  .source-title.title {{order.shop.address.title}}
+  .source-title.title(@click="onJumpAddress(order.shop.address)") {{order.shop.address.title}}
 .des-content.sub-1
   .des-icon.icon.iconfont.icon-icon_didian
-  .des-title.title {{order.consumer.address.title}}
+  .des-title.title(@click="onJumpAddress(order.consumer.address)") {{order.consumer.address.title+","+order.consumer.address.content}}
 .date-content.sub-1
   .date-icon.icon.iconfont.icon-icon_shijian
   .date-title.title {{order.shipDate}}

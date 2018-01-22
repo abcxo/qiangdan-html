@@ -46,13 +46,20 @@
               .item-inner
                 .item-input
                   input(type='tel', placeholder='Phone', v-model="order.consumer.phone")
+          li
+            .item-content
+              .item-media
+                i.icon.iconfont.icon-icon_didian
+              .item-inner
+                .item-input
+                  input(type='text', placeholder='Address', v-model="order.consumer.address.title" ,@click="onSelectAddress",readonly)                  
           li.align-top
             .item-content
               .item-media
                 i.icon.iconfont.icon-icon_didian
               .item-inner
                 .item-input
-                  textarea.address(placeholder='Address', v-model="order.consumer.address.title")
+                  textarea.address(placeholder='Street', v-model="order.consumer.address.content")
       .list-block
         ul                  
           li.align-top

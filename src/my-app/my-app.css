@@ -91,6 +91,8 @@ body * {
 .sign-screen .page-content .avatar {
   margin-top: 12px;
   height: 60px;
+  width: 60px;
+  border-radius: 30px;
 }
 .sign-screen .page-content input {
   font-size: 16px!important;

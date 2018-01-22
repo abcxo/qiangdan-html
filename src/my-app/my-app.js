@@ -15,8 +15,8 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-var host = 'http://198.211.112.76:3200/m/'
-// var host = 'http://192.168.31.35:3200/m/'
+// var host = 'http://198.211.112.76:3200/m/'
+var host = 'http://192.168.31.35:3200/m/'
 
 var isBus = true;
 
@@ -25,6 +25,21 @@ var isApp = typeof cordova !== 'undefined'
 var gUser;
 
 var pageRefresh
+
+
+var busConfig = {
+    apiKey: "AIzaSyAwMxxByhvYlUF67GyIzy8iBSR1MrLDe04",
+    authDomain: "turbo-bus.firebaseapp.com",
+    storageBucket: "gs://turbo-bus.appspot.com"
+};
+
+var config = {
+    apiKey: "AIzaSyAwMxxByhvYlUF67GyIzy8iBSR1MrLDe04",
+    authDomain: "turbo-bus.firebaseapp.com",
+    storageBucket: "gs://turbo-bus.appspot.com"
+};
+
+firebase.initializeApp(isBus?busConfig:config);
 
 
 function setItem(key, value) {
@@ -82,7 +97,13 @@ var onIndexPageInit= myApp.onPageInit('index', function (page) {
         methods: {
             onCallPhone:function (phone) {
                 window.plugins.CallNumber.callNumber(null, null, phone, null);
+            },
+            onJumpAddress:function (address) {
+                if(isApp){
+                    map.jumpAddress(address)
+                }
             }
+
         }
     });
     var waitingPageRefresh = $$("#waiting.pull-to-refresh-content");
@@ -211,17 +232,45 @@ function toSign() {
         data: {
             isBus:isBus,
             user:{
+                icon:null,
                 name:"",
                 password:"",
                 shopName:"",
                 phone:"",
                 email:"",
-                address:"",
+                address:null,
             },
         },
         methods: {
             onClose:function () {
                 myApp.closeModal(".sign-screen", true);
+            },
+            onAvatar:function () {
+                $$(".uploadAvatar").click();
+            },
+            onUploadAvatar:function (event) {
+                var vue = this;
+                var file =event.currentTarget .files[0];
+                if(file){
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e){
+                        vue.user.icon = this.result;
+                        var storageRef = firebase.storage().ref();
+                        storageRef.child('images/avatar/'+file.name).put(file).then(function (snapshot) {
+                            vue.user.icon = snapshot.downloadURL;
+                        });
+                    }
+                }
+
+            },
+            onSelectAddress:function (event) {
+                var vue = this;
+                if(isApp){
+                    map.selectAddress(vue.user.address,function (address) {
+                        vue.user.address = address;
+                    })
+                }
             },
             onSign:function () {
                 if(this.user.name.length>=6 &&
@@ -229,7 +278,7 @@ function toSign() {
                     this.user.shopName.length>=6 &&
                     this.user.phone.length>=6 &&
                     this.user.email.length>=6 &&
-                    this.user.address.length>=6
+                    this.user.address
                 ){
                     myApp.showIndicator();
                     $.post(host + "user/add?isBus="+isBus, {user:JSON.stringify(this.user)}, function (result) {
@@ -291,11 +340,11 @@ var onMePageInit= myApp.onPageInit('me', function (page) {
         methods: {
             onLogout:function () {
                 myApp.showIndicator();
+                removeUser();
                 myApp.getCurrentView().router.back({
                     url: 'index.html',
                     force: true
                 });
-                removeUser();
                 setTimeout(function () {
                     myApp.hideIndicator();
                     userInit(false);
@@ -331,6 +380,20 @@ var onHistoryPageInit= myApp.onPageInit('history', function (page) {
 
 var onCreatePageInit= myApp.onPageInit('create', function (page) {
     console.log('create init')
+    function getDate(){
+        var format = "";
+        var nTime = new Date();
+        format += nTime.getFullYear()+"-";
+        format += (nTime.getMonth()+1)<10?"0"+(nTime.getMonth()+1):(nTime.getMonth()+1);
+        format += "-";
+        format += nTime.getDate()<10?"0"+(nTime.getDate()):(nTime.getDate());
+        format += "T";
+        format += nTime.getHours()<10?"0"+(nTime.getHours()):(nTime.getHours());
+        format += ":";
+        format += nTime.getMinutes()<10?"0"+(nTime.getMinutes()):(nTime.getMinutes());
+        format += ":00";
+        return format;
+    }
     var vue = new Vue({
         el: "[data-page='create']",
         data: {
@@ -338,20 +401,19 @@ var onCreatePageInit= myApp.onPageInit('create', function (page) {
                 title:"",
                 shop:{
                     _id:gUser._id,
-                    name:gUser.shopName,
+                    icon:gUser.icon,
+                    name:gUser.name,
+                    shopName:gUser.shopName,
                     phone:gUser.phone,
                     address:gUser.address
                 },
                 consumer:{
+                    icon:null,
                     name:"",
                     phone:"",
-                    address:{
-                        title:"",
-                        lat:"",
-                        long:""
-                    }
+                    address:null
                 },
-                shipDate:"",
+                shipDate:getDate(),
                 price:"",
                 memo:"",
                 state:"waiting",
@@ -360,7 +422,12 @@ var onCreatePageInit= myApp.onPageInit('create', function (page) {
         },
         methods: {
             onSelectAddress:function () {
-
+                var vue = this;
+                if(isApp){
+                    map.selectAddress(vue.order.consumer.address,function (address) {
+                        vue.order.consumer.address = address;
+                    })
+                }
             },
             onCreate:function () {
                 if(this.order.title.length>4 &&
@@ -368,12 +435,12 @@ var onCreatePageInit= myApp.onPageInit('create', function (page) {
                     this.order.shipDate.length>0 &&
                     this.order.consumer.name.length>4 &&
                     this.order.consumer.phone.length>4 &&
-                    this.order.consumer.address.title.length>4){
+                    this.order.consumer.address){
                     myApp.showIndicator();
                     $.post(host + "order/add", {order:JSON.stringify(this.order)}, function (result) {
                         myApp.hideIndicator();
                         if(result.code == 200){
-                            myApp.router.back();
+                            myApp.getCurrentView().router.back();
                             var waitingPageRefresh = $$("#waiting.pull-to-refresh-content");
                             myApp.pullToRefreshTrigger(waitingPageRefresh)
                         }else{
