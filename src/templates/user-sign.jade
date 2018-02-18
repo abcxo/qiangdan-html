@@ -3,7 +3,7 @@
     .page
       .page-content.sign-screen-content
         i.close-icon.icon.iconfont.icon-icon-test(@click="onClose")
-        img.avatar(:src="user.icon?user.icon:'img/avatar-default.png'",@click="onAvatar")
+        img.avatar(:src="user.icon&&user.icon.length>0?user.icon:'img/avatar-default.png'",@click="onAvatar")
         input.uploadAvatar(type='file',style="display:none;",multiple accept="image/*",@change="onUploadAvatar")
         input.name(placeholder="Account Name",v-model="user.name")
         input.password(placeholder="Password",v-model="user.password")

@@ -2,6 +2,7 @@
   .preloader
   .pull-to-refresh-arrow
 .list-content
+  .empty(v-show="!orders || orders.length<=0") Empty
   ul.list
     li.item(v-for="order in orders")
       include order-item

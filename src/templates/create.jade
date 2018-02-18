@@ -55,11 +55,9 @@
                   input(type='text', placeholder='Address', v-model="order.consumer.address.title" ,@click="onSelectAddress",readonly)                  
           li.align-top
             .item-content
-              .item-media
-                i.icon.iconfont.icon-icon_didian
               .item-inner
                 .item-input
-                  textarea.address(placeholder='Street', v-model="order.consumer.address.content")
+                  input.street(type='text', placeholder='Street', v-model="order.consumer.address.content")
       .list-block
         ul                  
           li.align-top

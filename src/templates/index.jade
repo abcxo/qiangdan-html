@@ -11,14 +11,14 @@ html
     link(rel="stylesheet", href="css/#{stylesheetColorsFilename}.css")
     // Path to your custom app styles
     link(rel="stylesheet", href="css/my-app.css")
-    
+
     link(rel='stylesheet', href='css/iconfont.css')
     link(rel='stylesheet', href='css/toast.css')
     script(type='text/javascript ', src='js/jquery.min.js ')
     script(type='text/javascript ', src='js/jquery.transit.min.js ')
     script(type='text/javascript ', src='js/jquery.qrcode.min.js ')
     script(type='text/javascript ', src='js/vue.min.js ')
-    
+
   body
     // Status bar overlay for fullscreen mode
     .statusbar-overlay
@@ -62,6 +62,7 @@ html
                     .preloader
                     .pull-to-refresh-arrow
                   .list-content
+                    .empty(v-show="!waiting || waiting.length<=0") Empty
                     ul.list
                       li.item(v-for="order in waiting")
                         include order-item
@@ -70,6 +71,7 @@ html
                     .preloader
                     .pull-to-refresh-arrow
                   .list-content
+                    .empty(v-show="!pickups || pickups.length<=0") Empty
                     ul.list
                       li.item(v-for="order in pickups")
                         include order-item
@@ -78,14 +80,15 @@ html
                     .preloader
                     .pull-to-refresh-arrow
                   .list-content
+                    .empty(v-show="!deliveries || deliveries.length<=0") Empty
                     ul.list
                       li.item(v-for="order in deliveries")
                         include order-item
-                include user-login 
+                
             a.create-content(href="create.html")
               .create-icon.icon.iconfont.icon-bianji
               .create-title.title Create
-
+    include user-login
     // Path to Framework7 Library JS
     script(type='text/javascript ', src='cordova.js ')
     script(type="text/javascript", src="js/#{scriptFilename}.js")

@@ -6,13 +6,13 @@
     .center.sliding Information
 .pages.navbar-through
   .page(data-page="me")
-    .page-content
+    .page-content.me-content
       .list-block.media-list
         ul
           li
             .item-content.user-content
               .item-media
-                img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon(:src="user.icon?user.icon:'img/avatar-default.png'")
+                img.lazy.lazy-fadeIn.ks-demo-lazy.shop-icon.icon.avatar(:src="user.icon&&user.icon.length>0?user.icon:'img/avatar-default.png'")
               .item-inner
                 .item-title {{user.name}}
                 .item-subtitle   {{user.email}}
