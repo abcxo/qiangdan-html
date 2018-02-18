@@ -16,10 +16,10 @@ var mainView = myApp.addView('.view-main', {
 });
 
 // var host = 'http://198.211.112.76:3200/m/'
-// var host = 'http://192.168.31.35:3200/m/'
+// var host = 'http://192.168.0.111:3200/m/'
 var host = 'http://localhost:3200/m/'
 
-var isBus = false;
+var isBus = false
 
 var isApp = typeof cordova !== 'undefined'
 
@@ -36,13 +36,7 @@ var busConfig = {
     storageBucket: "gs://turbo-bus.appspot.com"
 };
 
-var config = {
-    apiKey: "AIzaSyAwMxxByhvYlUF67GyIzy8iBSR1MrLDe04",
-    authDomain: "turbo-bus.firebaseapp.com",
-    storageBucket: "gs://turbo-bus.appspot.com"
-};
-
-firebase.initializeApp(isBus ? busConfig : config);
+firebase.initializeApp(busConfig);
 
 
 function setItem(key, value) {
@@ -267,9 +261,9 @@ if (isApp) {
             window.FirebasePlugin.onNotificationOpen(function (notification) {
                 console.log(notification);
                 myApp.addNotification({
-                    "title": isBus ? "Turbo Bussiness" : "Turbo",
-                    "message": notification.aps.alert,
-                    "hold": 3000
+                    "title": "Turbo",
+                    "message": notification.aps.alert.title?notification.aps.alert.title:notification.aps.alert,
+                    "hold": 5000
                 });
                 if (pageRefresh) {
                     myApp.pullToRefreshTrigger(pageRefresh);
@@ -312,7 +306,17 @@ function toLogin(first) {
             name: "",
             password: ""
         },
+        watch: {
+            'isBus': function (val, oldVal) {
+                isBus = val;
+                setItem("isBus",val?'true':'false');
+            }
+        },
         methods: {
+            onTypeSelect:function (isBus) {
+                console.log(isBus)
+                this.isBus = isBus
+            },
             onLogin: function () {
                 if (this.name.length >= 6 && this.password.length >= 6) {
                     myApp.showIndicator();
@@ -435,14 +439,22 @@ function toSign() {
 
 
 function userInit(first) {
-    getItem('user', function (doc) {
-        if (doc) {
-            gUser = JSON.parse(doc)
-            onIndexPageInit.trigger()
-        } else {//需要先登录
-            toLogin(first);
+    getItem("isBus",function (doc) {
+        if(doc){
+            isBus = doc == "true"?true:false;
+        }else{
+            isBus = false;
         }
-    })
+        getItem('user', function (doc) {
+            if (doc) {
+                gUser = JSON.parse(doc)
+                onIndexPageInit.trigger()
+            } else {//需要先登录
+                toLogin(first);
+            }
+        })
+    });
+
 }
 
 
@@ -469,12 +481,18 @@ var onMePageInit = myApp.onPageInit('me', function (page) {
         methods: {
             onLogout: function () {
                 myApp.showIndicator();
-                removeUser();
-                myApp.getCurrentView().router.back({
-                    url: 'index.html'
+                $.post(host + "user/logout", {
+                    isBus: isBus,
+                    userId: this.user._id,
+                }, function (result) {
+                    myApp.hideIndicator();
+                    if (result.code == 200) {
+                        removeUser();
+                        userInit(false);
+                    } else {
+                        toast(result.message);
+                    }
                 });
-                myApp.hideIndicator();
-                userInit(false);
             }
         }
     });

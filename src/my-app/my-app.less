@@ -89,6 +89,25 @@ body {
             margin-top: @item-height;
             height:2*@item-height;
         }
+        .type-select{
+            display: flex;
+            margin:@padding-2 0;
+            .type-item{
+                font-size:13px;
+                font-weight:600!important;
+                width: 70px;
+                height: 25px;
+                line-height: 25px;
+                text-align: center;
+                margin: 0 @padding-1;
+                color:@text-color-light;
+                border: 2px solid @text-color-light;
+                &.active{
+                    color:@theme-color;
+                    border: 2px solid @theme-color;
+                }
+            }
+        }
         input{
             font-size: 16px!important;
             font-weight: 600 !important;

@@ -44,6 +44,25 @@ body * {
   margin-top: 44px;
   height: 88px;
 }
+.login-screen .page-content .type-select {
+  display: flex;
+  margin: 9px 0;
+}
+.login-screen .page-content .type-select .type-item {
+  font-size: 13px;
+  font-weight: 600!important;
+  width: 70px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  margin: 0 6px;
+  color: #999;
+  border: 2px solid #999;
+}
+.login-screen .page-content .type-select .type-item.active {
+  color: #C50B28;
+  border: 2px solid #C50B28;
+}
 .login-screen .page-content input {
   font-size: 16px!important;
   font-weight: 600 !important;

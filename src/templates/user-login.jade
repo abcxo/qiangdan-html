@@ -2,7 +2,10 @@
   .view
     .page
       .page-content.login-screen-content
-        img.logo(:src='isBus?"img/logo-bus.png":"img/logo.png"')
+        img.logo(src='img/logo.png')
+        .type-select
+          .type-item(:class="{'active':!isBus}",@click="onTypeSelect(false)") Normal
+          .type-item(:class="{'active':isBus}",@click="onTypeSelect(true)") Business
         input.name(placeholder="Account Name",v-model="name")
         input.password(placeholder="Password",type="password",v-model="password")
         button.login(@click="onLogin") Sign In
