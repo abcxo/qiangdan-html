@@ -27,5 +27,5 @@
   .memo-icon.icon.iconfont.icon-message
   .memo-title.title  {{order.memo}}
 .action-content
-  .price ${{order.price}}
+  .price ${{order.price}} (Fee:${{order.fee}})
   .action(@click="onAction(order)",:disabled="order.state =='complete' || order.state =='cancel'") {{isBus?(order.state =='complete'?"Complete":order.state =='cancel'?"Cancel":"Edit"):order.state=="waiting"?"Take Order":order.state=="pickup"?"Take Goods":order.state=="delivery"?"Complete":"Completion"}}

@@ -186,6 +186,47 @@ function onOrderAction(order) {
 }
 
 
+function imgResize(file, callback){
+    var fileReader = new FileReader();
+    fileReader.onload = function(){
+        var IMG = new Image();
+        IMG.src = this.result;
+        IMG.onload = function(){
+            var w = this.naturalWidth, h = this.naturalHeight, resizeW = 0, resizeH = 0;
+            // maxSize 是压缩的设置，设置图片的最大宽度和最大高度，等比缩放，level是报错的质量，数值越小质量越低
+            var maxSize = {
+                width: 200,
+                height: 200,
+                level: 0.6
+            };
+            if(w > maxSize.width || h > maxSize.height){
+                var multiple = Math.max(w / maxSize.width, h / maxSize.height);
+                resizeW = w / multiple;
+                resizeH = w / multiple;
+            } else {
+                // 如果图片尺寸小于最大限制，则不压缩直接上传
+                return callback(file)
+            }
+            var canvas = document.createElement('canvas'),
+                ctx = canvas.getContext('2d');
+            if(window.navigator.userAgent.indexOf('iPhone') > 0){
+                canvas.width = resizeH;
+                canvas.height = resizeW;
+                ctx.rorate(90 * Math.PI / 180);
+                ctx.drawImage(IMG, 0, -resizeH, resizeW, resizeH);
+            }else{
+                canvas.width = resizeW;
+                canvas.height = resizeH;
+                ctx.drawImage(IMG, 0, 0, resizeW, resizeH);
+            }
+            var base64 = canvas.toDataURL('image/jpeg', maxSize.level);
+            convertBlob(window.atob(base64.split(',')[1]), callback);
+        }
+    };
+    fileReader.readAsDataURL(file);
+}
+
+
 
 var onIndexPageInit = myApp.onPageInit('index', function (page) {
     console.log('index init')
@@ -353,6 +394,9 @@ function closeLogin() {
         StatusBar.styleLightContent();
         $$(".statusbar-overlay").css({"background": "#C50B28"});
     }
+    myApp.getCurrentView().router.back({
+        animatePages: false
+    })
     myApp.closeModal(".login-screen", true);
 }
 
@@ -417,7 +461,7 @@ function toSign() {
                 ) {
                     myApp.showIndicator();
                     this.user.token = gToken;
-                    $.post(host + "user/add?isBus=" + isBus, {user: JSON.stringify(this.user)}, function (result) {
+                    $.post(host + "user/add", {isBus:isBus,user: JSON.stringify(this.user)}, function (result) {
                         myApp.hideIndicator();
                         if (result.code == 200) {
                             storeUser(result.content);
@@ -551,6 +595,7 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
             isEdit:false,
             order: {
                 title: "",
+                fee:-1,
                 shop: {
                     _id: gUser._id,
                     icon: gUser.icon,
@@ -577,6 +622,15 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
                 if (isApp) {
                     map.selectAddress(vue.order.consumer.address, function (address) {
                         vue.order.consumer.address = address;
+                        myApp.showIndicator();
+                        $.post(host + "order/fee", {isBus: isBus,order: JSON.stringify(vue.order)}, function (result) {
+                            myApp.hideIndicator();
+                            if (result.code == 200) {
+                                vue.order.fee = result.content;
+                            } else {
+                                toast(result.message);
+                            }
+                        });
                     })
                 }
             },
