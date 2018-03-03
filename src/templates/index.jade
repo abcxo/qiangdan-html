@@ -85,7 +85,7 @@ html
                       li.item(v-for="order in deliveries")
                         include order-item
                 
-            a.create-content(href="create.html")
+            a.create-content(v-show="isBus",href="create.html")
               .create-icon.icon.iconfont.icon-bianji
               .create-title.title Create
     include user-login

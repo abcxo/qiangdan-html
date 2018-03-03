@@ -15,7 +15,7 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-// var host = 'http://198.211.112.76:3200/m/'
+var host = 'http://198.211.112.76:3200/m/'
 // var host = 'http://192.168.0.111:3200/m/'
 var host = 'http://localhost:3200/m/'
 
@@ -28,6 +28,8 @@ var gUser;
 var gToken;
 
 var pageRefresh;
+
+
 
 
 var busConfig = {
@@ -229,6 +231,10 @@ function imgResize(file, callback){
 
 
 var onIndexPageInit = myApp.onPageInit('index', function (page) {
+    if (isApp) {
+        StatusBar.styleLightContent();
+        $$(".statusbar-overlay").css({"background": "#C50B28"});
+    }
     console.log('index init')
     var vue = new Vue({
         el: "[data-page='index']",
@@ -258,12 +264,15 @@ var onIndexPageInit = myApp.onPageInit('index', function (page) {
     var pickupPageRefresh = $$("#pickup.pull-to-refresh-content");
     var deliveryPageRefresh = $$("#delivery.pull-to-refresh-content");
     waitingPageRefresh.on('refresh', function (event) {
+        vue.isBus = isBus;//重设状态
         loadOrder("waiting", waitingPageRefresh, vue.waiting);
     });
     pickupPageRefresh.on('refresh', function (event) {
+        vue.isBus = isBus;//重设状态
         loadOrder("pickup", pickupPageRefresh, vue.pickups);
     });
     deliveryPageRefresh.on('refresh', function (event) {
+        vue.isBus = isBus;//重设状态
         loadOrder("delivery", deliveryPageRefresh, vue.deliveries);
     });
 
@@ -284,6 +293,7 @@ var onIndexPageInit = myApp.onPageInit('index', function (page) {
     });
     myApp.pullToRefreshTrigger(waitingPageRefresh);
     pageRefresh = waitingPageRefresh;
+
 
 })
 
@@ -312,9 +322,7 @@ if (isApp) {
             }, function (error) {
                 console.error(error);
             });
-            if (gUser) {
-                closeLogin()
-            }
+            userInit(true)
 
         }, 2000);
         document.addEventListener("backbutton", function (event) {
@@ -328,7 +336,6 @@ if (isApp) {
                 }
             }
         }, false);
-        userInit(true)
     }
 } else {
     userInit(true)
@@ -390,10 +397,6 @@ function toLogin(first) {
 }
 
 function closeLogin() {
-    if (isApp) {
-        StatusBar.styleLightContent();
-        $$(".statusbar-overlay").css({"background": "#C50B28"});
-    }
     myApp.getCurrentView().router.back({
         animatePages: false
     })
@@ -401,6 +404,20 @@ function closeLogin() {
 }
 
 
+function render(src,callback){
+    var img = new Image();
+    img.onload = function () {
+        var oc = document.createElement('canvas'),
+            octx = oc.getContext('2d');
+
+        oc.width = 200;
+        oc.height = img.height / (img.width/200);
+        octx.drawImage(img, 0, 0, oc.width, oc.height);
+        callback(oc.toDataURL('image/jpeg', 1))
+    }
+    img.src = src;
+
+};
 
 function toSign() {
     var signVue = new Vue({
@@ -416,6 +433,7 @@ function toSign() {
                 email: "",
                 address: null
             },
+            result:null
         },
         methods: {
             onClose: function () {
@@ -425,19 +443,16 @@ function toSign() {
                 $$(".uploadAvatar").click();
             },
             onUploadAvatar: function (event) {
-                var vue = this;
                 var file = event.currentTarget.files[0];
+                var vue = this;
                 if (file) {
-                    myApp.showIndicator();
                     var reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = function (e) {
-                        vue.user.icon = this.result;
-                        var storageRef = firebase.storage().ref();
-                        storageRef.child('images/avatar/' + file.name).put(file).then(function (snapshot) {
-                            vue.user.icon = snapshot.downloadURL;
-                            myApp.hideIndicator();
-                        });
+                        render(this.result,function (data) {
+                            vue.result = data;
+                            vue.user.icon = data;
+                        })
                     }
                 }
 
@@ -457,21 +472,33 @@ function toSign() {
                     this.user.shopName.length >= 6 &&
                     this.user.phone.length >= 6 &&
                     this.user.email.length >= 6
-                    && this.user.address
+                    // && this.user.address
                 ) {
+                    var vue = this;
                     myApp.showIndicator();
-                    this.user.token = gToken;
-                    $.post(host + "user/add", {isBus:isBus,user: JSON.stringify(this.user)}, function (result) {
-                        myApp.hideIndicator();
-                        if (result.code == 200) {
-                            storeUser(result.content);
-                            onIndexPageInit.trigger();
-                            myApp.closeModal(".sign-screen", true);
-                            closeLogin()
-                        } else {
-                            toast(result.message);
-                        }
-                    });
+                    if(vue.result){
+                        var storageRef = firebase.storage().ref();
+                        storageRef.child('images/'+(isBus?'merchant':'staff')+'/avatar/' + vue.user.name).putString(vue.result,'data_url').then(function (snapshot) {
+                            vue.user.icon = snapshot.downloadURL;
+                            completeSign()
+                        });
+                    }else{
+                        completeSign()
+                    }
+                    function completeSign() {
+                        vue.user.token = gToken;
+                        $.post(host + "user/add", {isBus:isBus,user: JSON.stringify(vue.user)}, function (result) {
+                            myApp.hideIndicator();
+                            if (result.code == 200) {
+                                storeUser(result.content);
+                                onIndexPageInit.trigger();
+                                myApp.closeModal(".sign-screen", true);
+                                closeLogin()
+                            } else {
+                                toast(result.message);
+                            }
+                        });
+                    }
                 } else {
                     toast("Please check input.");
                 }

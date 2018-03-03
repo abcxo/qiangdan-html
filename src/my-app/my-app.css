@@ -49,7 +49,7 @@ body * {
   margin: 9px 0;
 }
 .login-screen .page-content .type-select .type-item {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600!important;
   width: 70px;
   height: 25px;
@@ -121,6 +121,7 @@ body * {
   height: 60px;
   width: 60px;
   border-radius: 30px;
+  object-fit: cover;
 }
 .sign-screen .page-content input {
   font-size: 16px!important;
@@ -242,6 +243,7 @@ html.pixel-ratio-3 .list-content .list .item .item-title:after {
   height: 38px;
   width: 38px;
   border-radius: 19px;
+  object-fit: cover;
 }
 .list-content .list .item .sub-2 .block {
   margin-left: 12px;
@@ -351,6 +353,7 @@ html.pixel-ratio-3 .list-content .list .item .sub-1:after {
   width: 68px;
   height: 68px;
   border-radius: 34px;
+  object-fit: cover;
 }
 .page[data-page='me'] .logout {
   margin-top: 44px;
