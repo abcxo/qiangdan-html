@@ -7,7 +7,7 @@
 .consumer-content.sub-2
   img.lazy.lazy-fadeIn.ks-demo-lazy.consumer-icon.icon(:src="order.consumer.icon&&order.consumer.icon.length>0?order.consumer.icon:'img/avatar-default.png'")
   .block
-    .consumer-title.title Consumer: {{order.consumer.name}}
+    .consumer-title.title Recipient: {{order.consumer.name}}
     a.consumer-phone.desc(@click="onCallPhone(order.consumer.phone)") {{order.consumer.phone}}
 .courier-content.sub-2(v-show="order.courier")
   img.lazy.lazy-fadeIn.ks-demo-lazy.courier-icon.icon(:src="order.courier.icon&&order.courier.icon.length>0?order.courier.icon:'img/avatar-default.png'")
@@ -22,10 +22,10 @@
   .des-title.title(@click="onJumpAddress(order.consumer.address)") {{(order.consumer.address.title?order.consumer.address.title:"")+(order.consumer.address.title&&order.consumer.address.content?",":"")+(order.consumer.address.content?order.consumer.address.content:"")}}
 .date-content.sub-1
   .date-icon.icon.iconfont.icon-icon_shijian
-  .date-title.title {{order.shipDate}}
+  .date-title.title {{new Date(order.shipDate).toLocaleString()}}
 .memo-content.sub-1
   .memo-icon.icon.iconfont.icon-message
   .memo-title.title  {{order.memo}}
 .action-content
   .price ${{order.price}} (Fee:${{order.fee}})
-  .action(@click="onAction(order)",:disabled="order.state =='complete' || order.state =='cancel'") {{isBus?(order.state =='complete'?"Complete":order.state =='cancel'?"Cancel":"Edit"):order.state=="waiting"?"Take Order":order.state=="pickup"?"Take Goods":order.state=="delivery"?"Complete":"Completion"}}
+  .action(@click="onAction(order)",:disabled="order.state =='complete' || order.state =='cancel'") {{isBus?(order.state =='complete'?"Complete":order.state =='cancel'?"Cancel":"Edit"):order.state=="waiting"?"Take Order":order.state=="pickup"?"Picked Up":order.state=="delivery"?"Complete":"Completion"}}

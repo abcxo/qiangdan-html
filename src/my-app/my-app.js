@@ -15,7 +15,7 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-var host = 'http://198.211.112.76:3200/m/'
+// var host = 'http://198.211.112.76:3200/m/'
 // var host = 'http://192.168.0.111:3200/m/'
 var host = 'http://localhost:3200/m/'
 
@@ -29,7 +29,7 @@ var gToken;
 
 var pageRefresh;
 
-
+var signVue;
 
 
 var busConfig = {
@@ -100,7 +100,7 @@ function onOrderAction(order) {
                     onClick: function () {
                         myApp.getCurrentView().router.load({
                             url: 'create.html',
-                            query: {isEdit: true,order:order}
+                            query: {isEdit: true, order: order}
                         })
                     }
                 },
@@ -116,11 +116,11 @@ function onOrderAction(order) {
             [
                 {
                     text: 'Cancel',
-                    color:"blue"
+                    color: "blue"
                 }
             ]
         ];
-        if(order.state != "waiting"){
+        if (order.state != "waiting") {
             actionSheetButtons = [
                 // First buttons group
                 [
@@ -141,7 +141,7 @@ function onOrderAction(order) {
                 [
                     {
                         text: 'Cancel',
-                        color:"blue"
+                        color: "blue"
                     }
                 ]
             ];
@@ -177,7 +177,7 @@ function onOrderAction(order) {
             } else {
                 toast(result.message);
             }
-            if(pageRefresh){
+            if (pageRefresh) {
                 myApp.pullToRefreshTrigger(pageRefresh);
             }
 
@@ -188,12 +188,12 @@ function onOrderAction(order) {
 }
 
 
-function imgResize(file, callback){
+function imgResize(file, callback) {
     var fileReader = new FileReader();
-    fileReader.onload = function(){
+    fileReader.onload = function () {
         var IMG = new Image();
         IMG.src = this.result;
-        IMG.onload = function(){
+        IMG.onload = function () {
             var w = this.naturalWidth, h = this.naturalHeight, resizeW = 0, resizeH = 0;
             // maxSize 是压缩的设置，设置图片的最大宽度和最大高度，等比缩放，level是报错的质量，数值越小质量越低
             var maxSize = {
@@ -201,7 +201,7 @@ function imgResize(file, callback){
                 height: 200,
                 level: 0.6
             };
-            if(w > maxSize.width || h > maxSize.height){
+            if (w > maxSize.width || h > maxSize.height) {
                 var multiple = Math.max(w / maxSize.width, h / maxSize.height);
                 resizeW = w / multiple;
                 resizeH = w / multiple;
@@ -211,12 +211,12 @@ function imgResize(file, callback){
             }
             var canvas = document.createElement('canvas'),
                 ctx = canvas.getContext('2d');
-            if(window.navigator.userAgent.indexOf('iPhone') > 0){
+            if (window.navigator.userAgent.indexOf('iPhone') > 0) {
                 canvas.width = resizeH;
                 canvas.height = resizeW;
                 ctx.rorate(90 * Math.PI / 180);
                 ctx.drawImage(IMG, 0, -resizeH, resizeW, resizeH);
-            }else{
+            } else {
                 canvas.width = resizeW;
                 canvas.height = resizeH;
                 ctx.drawImage(IMG, 0, 0, resizeW, resizeH);
@@ -227,7 +227,6 @@ function imgResize(file, callback){
     };
     fileReader.readAsDataURL(file);
 }
-
 
 
 var onIndexPageInit = myApp.onPageInit('index', function (page) {
@@ -303,17 +302,17 @@ if (isApp) {
         setTimeout(function () {
             navigator.splashscreen.hide();
             window.FirebasePlugin.grantPermission();
-            window.FirebasePlugin.onTokenRefresh(function(token) {
+            window.FirebasePlugin.onTokenRefresh(function (token) {
                 console.log(token);
                 gToken = token
-            }, function(error) {
+            }, function (error) {
                 console.error(error);
             });
             window.FirebasePlugin.onNotificationOpen(function (notification) {
                 console.log(notification);
                 myApp.addNotification({
                     "title": "Turbo",
-                    "message": notification.aps.alert.title?notification.aps.alert.title:notification.aps.alert,
+                    "message": notification.aps.alert.title ? notification.aps.alert.title : notification.aps.alert,
                     "hold": 5000
                 });
                 if (pageRefresh) {
@@ -357,11 +356,11 @@ function toLogin(first) {
         watch: {
             'isBus': function (val, oldVal) {
                 isBus = val;
-                setItem("isBus",val?'true':'false');
+                setItem("isBus", val ? 'true' : 'false');
             }
         },
         methods: {
-            onTypeSelect:function (isBus) {
+            onTypeSelect: function (isBus) {
                 console.log(isBus)
                 this.isBus = isBus
             },
@@ -372,7 +371,7 @@ function toLogin(first) {
                         isBus: isBus,
                         name: this.name,
                         password: this.password,
-                        token:gToken
+                        token: gToken
                     }, function (result) {
                         myApp.hideIndicator();
                         if (result.code == 200) {
@@ -404,14 +403,14 @@ function closeLogin() {
 }
 
 
-function render(src,callback){
+function render(src, callback) {
     var img = new Image();
     img.onload = function () {
         var oc = document.createElement('canvas'),
             octx = oc.getContext('2d');
 
         oc.width = 200;
-        oc.height = img.height / (img.width/200);
+        oc.height = img.height / (img.width / 200);
         octx.drawImage(img, 0, 0, oc.width, oc.height);
         callback(oc.toDataURL('image/jpeg', 1))
     }
@@ -419,101 +418,140 @@ function render(src,callback){
 
 };
 
-function toSign() {
-    var signVue = new Vue({
-        el: ".sign-screen",
-        data: {
-            isBus: isBus,
-            user: {
-                icon: "",
-                name: "",
-                password: "",
-                shopName: "",
-                phone: "",
-                email: "",
-                address: null
+function toSign(isEdit,callback) {
+    if (!signVue) {
+        signVue = new Vue({
+            el: ".sign-screen",
+            data: {
+                isBus: isBus,
+                user: {
+                    icon: "",
+                    name: "",
+                    password: "",
+                    shopName: "",
+                    phone: "",
+                    email: "",
+                    address: null
+                },
+                isEdit: isEdit,
+                result: null
             },
-            result:null
-        },
-        methods: {
-            onClose: function () {
-                myApp.closeModal(".sign-screen", true);
-            },
-            onAvatar: function () {
-                $$(".uploadAvatar").click();
-            },
-            onUploadAvatar: function (event) {
-                var file = event.currentTarget.files[0];
-                var vue = this;
-                if (file) {
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (e) {
-                        render(this.result,function (data) {
-                            vue.result = data;
-                            vue.user.icon = data;
+            methods: {
+                onClose: function () {
+                    myApp.closeModal(".sign-screen", true);
+                },
+                onAvatar: function () {
+                    $$(".uploadAvatar").click();
+                },
+                onUploadAvatar: function (event) {
+                    var file = event.currentTarget.files[0];
+                    var vue = this;
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function (e) {
+                            render(this.result, function (data) {
+                                vue.result = data;
+                                vue.user.icon = data;
+                            })
+                        }
+                    }
+
+                },
+                onSelectAddress: function (event) {
+                    var vue = this;
+                    if (isApp) {
+                        map.selectAddress(vue.user.address, function (address) {
+                            vue.user.address = address;
                         })
                     }
-                }
-
-            },
-            onSelectAddress: function (event) {
-                var vue = this;
-                if (isApp) {
-                    map.selectAddress(vue.user.address, function (address) {
-                        vue.user.address = address;
-                    })
-                }
-            },
-            onSign: function () {
-                if (this.user.icon.length >= 6 &&
-                    this.user.name.length >= 6 &&
-                    this.user.password.length >= 6 &&
-                    this.user.shopName.length >= 6 &&
-                    this.user.phone.length >= 6 &&
-                    this.user.email.length >= 6
+                },
+                onSign: function () {
+                    if (this.user.icon.length >= 6 &&
+                        this.user.name.length >= 6 &&
+                        this.user.password.length >= 6 &&
+                        this.user.shopName.length >= 6 &&
+                        this.user.phone.length >= 6 &&
+                        this.user.email.length >= 6
                     // && this.user.address
-                ) {
-                    var vue = this;
-                    myApp.showIndicator();
-                    if(vue.result){
-                        var storageRef = firebase.storage().ref();
-                        storageRef.child('images/'+(isBus?'merchant':'staff')+'/avatar/' + vue.user.name).putString(vue.result,'data_url').then(function (snapshot) {
-                            vue.user.icon = snapshot.downloadURL;
+                    ) {
+                        var vue = this;
+                        myApp.showIndicator();
+                        if (vue.result) {
+                            var storageRef = firebase.storage().ref();
+                            storageRef.child('images/' + (isBus ? 'merchant' : 'staff') + '/avatar/' + vue.user.name).putString(vue.result, 'data_url').then(function (snapshot) {
+                                vue.user.icon = snapshot.downloadURL;
+                                completeSign()
+                            });
+                        } else {
                             completeSign()
-                        });
-                    }else{
-                        completeSign()
+                        }
+                        function completeSign() {
+                            vue.user.token = gToken;
+                            $.post(host + (vue.isEdit ? "user/edit" : "user/add"), {
+                                isBus: isBus,
+                                user: JSON.stringify(vue.user)
+                            }, function (result) {
+                                myApp.hideIndicator();
+                                if (result.code == 200) {
+                                    storeUser(result.content);
+                                    onIndexPageInit.trigger();
+                                    if(callback){
+                                        callback();
+                                    }
+                                    myApp.closeModal(".sign-screen", true);
+                                    if (vue.isEdit) {
+                                        if (isApp) {
+                                            StatusBar.styleLightContent();
+                                            $$(".statusbar-overlay").css({"background": "#C50B28"});
+                                        }
+                                    }else{
+                                        closeLogin();
+                                    }
+
+                                } else {
+                                    toast(result.message);
+                                }
+                            });
+                        }
+                    } else {
+                        toast("Please check input.");
                     }
-                    function completeSign() {
-                        vue.user.token = gToken;
-                        $.post(host + "user/add", {isBus:isBus,user: JSON.stringify(vue.user)}, function (result) {
-                            myApp.hideIndicator();
-                            if (result.code == 200) {
-                                storeUser(result.content);
-                                onIndexPageInit.trigger();
-                                myApp.closeModal(".sign-screen", true);
-                                closeLogin()
-                            } else {
-                                toast(result.message);
-                            }
-                        });
-                    }
-                } else {
-                    toast("Please check input.");
                 }
             }
+        });
+    }
+    signVue.isBus = isBus;
+    signVue.user = {
+        icon: "",
+        name: "",
+        password: "",
+        shopName: "",
+        phone: "",
+        email: "",
+        address: null
+    };
+    signVue.isEdit = false;
+    signVue.result = null;
+    if (isEdit) {
+        if (isApp) {
+            StatusBar.styleDefault();
+            $$(".statusbar-overlay").css({"background": "#FFF"});
         }
-    });
+        signVue.user = gUser;
+        signVue.isEdit = true;
+    }
     myApp.popup(".sign-screen", true, true);
 }
 
 
+
+
 function userInit(first) {
-    getItem("isBus",function (doc) {
-        if(doc){
-            isBus = doc == "true"?true:false;
-        }else{
+    getItem("isBus", function (doc) {
+        if (doc) {
+            isBus = doc == "true" ? true : false;
+        } else {
             isBus = false;
         }
         getItem('user', function (doc) {
@@ -567,6 +605,12 @@ var onMePageInit = myApp.onPageInit('me', function (page) {
             }
         }
     });
+    $('.me-edit').click(function () {
+        toSign(true,function () {
+            vue.user = gUser;
+        });
+    })
+    isBus?$('.me-edit').show():$('.me-edit').hide();
 })
 
 
@@ -616,13 +660,14 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
         return format;
     }
 
+
     var vue = new Vue({
         el: "[data-page='create']",
         data: {
-            isEdit:false,
+            isEdit: false,
             order: {
                 title: "",
-                fee:-1,
+                fee: -1,
                 shop: {
                     _id: gUser._id,
                     icon: gUser.icon,
@@ -650,7 +695,7 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
                     map.selectAddress(vue.order.consumer.address, function (address) {
                         vue.order.consumer.address = address;
                         myApp.showIndicator();
-                        $.post(host + "order/fee", {isBus: isBus,order: JSON.stringify(vue.order)}, function (result) {
+                        $.post(host + "order/fee", {isBus: isBus, order: JSON.stringify(vue.order)}, function (result) {
                             myApp.hideIndicator();
                             if (result.code == 200) {
                                 vue.order.fee = result.content;
@@ -665,11 +710,14 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
                 if (this.order.title.length > 4 &&
                     this.order.price.length > 0 &&
                     this.order.shipDate.length > 0 &&
-                    this.order.consumer.name.length > 4 &&
+                    this.order.consumer.name.length > 2 &&
                     this.order.consumer.phone.length > 4 &&
                     this.order.consumer.address) {
                     myApp.showIndicator();
-                    $.post(host + (this.isEdit?"order/edit":"order/add"), {isBus: isBus,order: JSON.stringify(this.order)}, function (result) {
+                    $.post(host + (this.isEdit ? "order/edit" : "order/add"), {
+                        isBus: isBus,
+                        order: JSON.stringify(this.order)
+                    }, function (result) {
                         myApp.hideIndicator();
                         if (result.code == 200) {
                             myApp.getCurrentView().router.back();
@@ -687,7 +735,7 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
         }
     });
 
-    if(page.query.isEdit){
+    if (page.query.isEdit) {
         vue.isEdit = page.query.isEdit;
         vue.order = page.query.order;
     }
