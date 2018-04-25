@@ -15,9 +15,10 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-// var host = 'http://198.211.112.76:3200/m/'
+var host = 'http://198.211.112.76:3200/m/'
 // var host = 'http://192.168.0.111:3200/m/'
-var host = 'http://localhost:3200/m/'
+// var host = 'http://localhost:3200/m/'
+//var host = 'http://172.20.10.2:3200/m/'
 
 var isBus = false
 
@@ -33,9 +34,9 @@ var signVue;
 
 
 var busConfig = {
-    apiKey: "AIzaSyAwMxxByhvYlUF67GyIzy8iBSR1MrLDe04",
-    authDomain: "turbo-bus.firebaseapp.com",
-    storageBucket: "gs://turbo-bus.appspot.com"
+    apiKey: "AIzaSyAadhZzirOyU-Mh9QfJjwGdyHZv2jjtyyM",
+    authDomain: "turbo-5d0ac.firebaseapp.com",
+    storageBucket: "gs://turbo-5d0ac.appspot.com"
 };
 
 firebase.initializeApp(busConfig);
@@ -301,32 +302,42 @@ if (isApp) {
     function onDeviceReady() {
         setTimeout(function () {
             navigator.splashscreen.hide();
-            window.FirebasePlugin.grantPermission();
-            window.FirebasePlugin.onTokenRefresh(function (token) {
-                console.log(token);
-                gToken = token
-            }, function (error) {
-                console.error(error);
-            });
-            window.FirebasePlugin.onNotificationOpen(function (notification) {
-                console.log(notification);
-                myApp.addNotification({
-                    "title": "Turbo",
-                    "message": notification.aps.alert.title ? notification.aps.alert.title : notification.aps.alert,
-                    "hold": 5000
-                });
-                if (pageRefresh) {
-                    myApp.pullToRefreshTrigger(pageRefresh);
+        }, 1000);
+        window.FirebasePlugin.grantPermission();
+        window.FirebasePlugin.onTokenRefresh(function (token) {
+            console.log(token);
+            gToken = token
+            setTimeout(function () {
+                if(isBus){
+                    window.FirebasePlugin.unsubscribe("staff")
+                    window.FirebasePlugin.subscribe("merchant")
+                }else{
+                    window.FirebasePlugin.unsubscribe("merchant")
+                    window.FirebasePlugin.subscribe("staff")
                 }
-            }, function (error) {
-                console.error(error);
+            },2000)
+        }, function (error) {
+            console.error(error);
+        });
+        window.FirebasePlugin.onNotificationOpen(function (notification) {
+            console.log(notification);
+            myApp.addNotification({
+                "title": "Turbo",
+                "message": notification.aps.alert.title ? notification.aps.alert.title : notification.aps.alert,
+                "hold": 5000
             });
-            userInit(true)
-
-        }, 2000);
+            if (pageRefresh) {
+                myApp.pullToRefreshTrigger(pageRefresh);
+            }
+        }, function (error) {
+            console.error(error);
+        });
+        userInit(true)
         document.addEventListener("backbutton", function (event) {
             myApp.hideIndicator()
-            var modal = myApp.closeModal()
+            if(gUser!=undefined){
+                var modal = myApp.closeModal()
+            }
             if (!modal) {
                 if (myApp.getCurrentView().history.length > 1) {
                     myApp.getCurrentView().router.back()
@@ -392,7 +403,7 @@ function toLogin(first) {
             }
         }
     });
-    myApp.loginScreen(".login-screen", true)
+    myApp.loginScreen(".login-screen", !first)
 }
 
 function closeLogin() {
@@ -707,10 +718,10 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
                 }
             },
             onCreate: function () {
-                if (this.order.title.length > 4 &&
+                if (this.order.title.length > 0 &&
                     this.order.price.length > 0 &&
                     this.order.shipDate.length > 0 &&
-                    this.order.consumer.name.length > 2 &&
+                    this.order.consumer.name.length > 0 &&
                     this.order.consumer.phone.length > 4 &&
                     this.order.consumer.address) {
                     myApp.showIndicator();
