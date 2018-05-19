@@ -678,7 +678,7 @@ var onCreatePageInit = myApp.onPageInit('create', function (page) {
             isEdit: false,
             order: {
                 title: "",
-                fee: -1,
+                fee: 0,
                 shop: {
                     _id: gUser._id,
                     icon: gUser.icon,
