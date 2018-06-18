@@ -15,9 +15,9 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-var host = 'http://198.211.112.76:3200/m/'
+// var host = 'http://198.211.112.76:3200/m/'
 // var host = 'http://192.168.0.111:3200/m/'
-// var host = 'http://localhost:3200/m/'
+var host = 'http://localhost:3200/m/'
 //var host = 'http://172.20.10.2:3200/m/'
 
 var isBus = false
@@ -30,7 +30,12 @@ var gToken;
 
 var pageRefresh;
 
+
 var signVue;
+
+var termsVue;
+
+var themeColor = "#000000"
 
 
 var busConfig = {
@@ -76,11 +81,14 @@ function getItem(key, callback) {
 function storeUser(obj) {
     gUser = obj;
     setItem("user", JSON.stringify(gUser))
+    subTopic();
 }
 
 function removeUser() {
     delete gUser;
     removeItem("user");
+    window.FirebasePlugin.unsubscribe("staff")
+    window.FirebasePlugin.unsubscribe("merchant")
 }
 
 
@@ -162,6 +170,7 @@ function onOrderAction(order) {
     }
 
     function onAction() {
+        myApp.showIndicator();
         $.post(host + "order/editState", {
             isBus: isBus,
             orderId: order._id,
@@ -174,6 +183,7 @@ function onOrderAction(order) {
             }),
             state: state
         }, function (result) {
+            myApp.hideIndicator();
             if (result.code == 200) {
             } else {
                 toast(result.message);
@@ -233,7 +243,7 @@ function imgResize(file, callback) {
 var onIndexPageInit = myApp.onPageInit('index', function (page) {
     if (isApp) {
         StatusBar.styleLightContent();
-        $$(".statusbar-overlay").css({"background": "#C50B28"});
+        $$(".statusbar-overlay").css({"background": themeColor});
     }
     console.log('index init')
     var vue = new Vue({
@@ -307,25 +317,19 @@ if (isApp) {
         window.FirebasePlugin.onTokenRefresh(function (token) {
             console.log(token);
             gToken = token
-            setTimeout(function () {
-                if(isBus){
-                    window.FirebasePlugin.unsubscribe("staff")
-                    window.FirebasePlugin.subscribe("merchant")
-                }else{
-                    window.FirebasePlugin.unsubscribe("merchant")
-                    window.FirebasePlugin.subscribe("staff")
-                }
-            },2000)
+            subTopic();
         }, function (error) {
             console.error(error);
         });
         window.FirebasePlugin.onNotificationOpen(function (notification) {
             console.log(notification);
-            myApp.addNotification({
-                "title": "Turbo",
-                "message": notification.aps.alert.title ? notification.aps.alert.title : notification.aps.alert,
-                "hold": 5000
-            });
+            if(notification.tab != true && notification.title){
+                myApp.addNotification({
+                    "title": "Turbo",
+                    "message": notification.title,
+                    "hold": 5000
+                });
+            }
             if (pageRefresh) {
                 myApp.pullToRefreshTrigger(pageRefresh);
             }
@@ -351,6 +355,21 @@ if (isApp) {
     userInit(true)
 
 }
+
+
+function subTopic(){
+    setTimeout(function () {
+        if(isBus){
+            window.FirebasePlugin.unsubscribe("staff")
+            window.FirebasePlugin.subscribe("merchant")
+        }else{
+            window.FirebasePlugin.unsubscribe("merchant")
+            window.FirebasePlugin.subscribe("staff")
+        }
+    },2000)
+}
+
+
 
 function toLogin(first) {
     if (isApp) {
@@ -400,6 +419,9 @@ function toLogin(first) {
             },
             onToSign: function () {
                 toSign()
+            },
+            onToTerms: function () {
+                toTerms()
             }
         }
     });
@@ -514,7 +536,7 @@ function toSign(isEdit,callback) {
                                     if (vue.isEdit) {
                                         if (isApp) {
                                             StatusBar.styleLightContent();
-                                            $$(".statusbar-overlay").css({"background": "#C50B28"});
+                                            $$(".statusbar-overlay").css({"background": themeColor});
                                         }
                                     }else{
                                         closeLogin();
@@ -555,6 +577,19 @@ function toSign(isEdit,callback) {
     myApp.popup(".sign-screen", true, true);
 }
 
+function toTerms() {
+    if (!termsVue) {
+        termsVue = new Vue({
+            el: ".terms-screen",
+            methods: {
+                onClose: function () {
+                    myApp.closeModal(".terms-screen", true);
+                }
+            }
+        });
+    }
+    myApp.popup(".terms-screen", true, true);
+}
 
 
 

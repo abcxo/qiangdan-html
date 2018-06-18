@@ -1,14 +1,18 @@
 @import "../less/ios/_mixins.less";
-@theme-color:#C50B28;
+//@theme-color:#C50B28;
+@theme-color:#000000;
 
 @header-height:70px;
-@text-color:#666;
+//@text-color:#666;
+@text-color:#222;
 @text-color-light:#999;
 @margin-min:40px;
 @margin-mix:20px;
 @margin-mix2:10px;
-@theme-color:#C50B28;
-@theme-color-dark:#B10318;
+//@theme-color:#C50B28;
+//@theme-color-dark:#B10318;
+@theme-color-dark:#222222;
+
 @theme-color-light:#FFF6F8;
 @background-color:#eee;
 @blue-color:#20ABFF;
@@ -87,7 +91,16 @@ body {
         padding: 30px;
         .logo{
             margin-top: @item-height;
-            height:2*@item-height;
+            //height:2*@item-height;
+            font-weight: 900;
+            font-size: 2*@ts-3;
+            color: @theme-color;
+        }
+        .slogan{
+            font-weight: 900;
+            font-size: @ts-3;
+            margin-bottom: @padding-3;
+            color: @theme-color;
         }
         .type-select{
             display: flex;
@@ -140,6 +153,13 @@ body {
             &:active{
                 background-color: @theme-color-dark;
             }
+        }
+        .terms{
+            margin-top: @padding-3;
+            width: 100%;
+            text-align: center;
+            font-size: @ts-1;
+            color: @text-color-light;
         }
         .sign{
             margin-top: @padding-3;
@@ -211,6 +231,24 @@ body {
 
 }
 
+
+.terms-screen{
+    .page-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px 30px 30px;
+        background: white;
+        .close-icon{
+            align-self: flex-start;
+            margin-top: @padding-3;
+            margin-left: -@padding-3;
+            color:@theme-color;
+        }
+
+    }
+
+}
 
 
 

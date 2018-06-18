@@ -2,12 +2,16 @@
   .view
     .page
       .page-content.login-screen-content
-        img.logo(src='img/logo.png')
+        //img.logo(src='img/logo.jpg')
+        .logo SPIN
+        .slogan Local Courier  
         .type-select
           .type-item(:class="{'active':!isBus}",@click="onTypeSelect(false)") Rider
           .type-item(:class="{'active':isBus}",@click="onTypeSelect(true)") Business
         input.name(placeholder="Account Name",v-model="name")
         input.password(placeholder="Password",type="password",v-model="password")
         button.login(@click="onLogin") Sign In
+        a.terms(v-show='isBus',@click="onToTerms") Terms and Conditions 
         a.sign(v-show='isBus',@click="onToSign") Sign Up
+include user-terms
 include user-sign
