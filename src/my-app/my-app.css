@@ -5,7 +5,7 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  color: #222;
+  color: #666;
   background-color: #eee;
 }
 body * {
@@ -42,15 +42,14 @@ body * {
 }
 .login-screen .page-content .logo {
   margin-top: 44px;
-  font-weight: 900;
-  font-size: 36px;
-  color: #000000;
+  height: 88px;
+  margin-bottom: 12px;
 }
 .login-screen .page-content .slogan {
   font-weight: 900;
   font-size: 18px;
   margin-bottom: 12px;
-  color: #000000;
+  color: #C50B28;
 }
 .login-screen .page-content .type-select {
   display: flex;
@@ -68,8 +67,8 @@ body * {
   border: 2px solid #999;
 }
 .login-screen .page-content .type-select .type-item.active {
-  color: #000000;
-  border: 2px solid #000000;
+  color: #C50B28;
+  border: 2px solid #C50B28;
 }
 .login-screen .page-content input {
   font-size: 16px!important;
@@ -82,28 +81,28 @@ body * {
   height: 44px;
   width: 100%;
   margin: 40px 40px 0px;
-  color: #222;
+  color: #666;
 }
 .login-screen .page-content input::placeholder {
   color: #999;
 }
 .login-screen .page-content input:active,
 .login-screen .page-content input:focus {
-  border-color: #222;
+  border-color: #666;
 }
 .login-screen .page-content .login {
   height: 44px;
   width: 100%;
   outline: none !important;
   border: none;
-  background-color: #000000;
+  background-color: #C50B28;
   margin: 40px 40px 0px;
   color: white;
   border-radius: 4px;
   font-size: 16px;
 }
 .login-screen .page-content .login:active {
-  background-color: #222222;
+  background-color: #B10318;
 }
 .login-screen .page-content .terms {
   margin-top: 12px;
@@ -129,7 +128,7 @@ body * {
   align-self: flex-start;
   margin-top: 12px;
   margin-left: -12px;
-  color: #000000;
+  color: #C50B28;
 }
 .sign-screen .page-content .avatar {
   margin-top: 12px;
@@ -149,14 +148,14 @@ body * {
   height: 44px;
   width: 100%;
   margin: 20px 0px 0px;
-  color: #222;
+  color: #666;
 }
 .sign-screen .page-content input::placeholder {
   color: #999;
 }
 .sign-screen .page-content input:active,
 .sign-screen .page-content input:focus {
-  border-color: #222;
+  border-color: #666;
 }
 .sign-screen .page-content .sign {
   min-height: 44px;
@@ -164,14 +163,14 @@ body * {
   width: 100%;
   outline: none !important;
   border: none;
-  background-color: #000000;
+  background-color: #C50B28;
   margin: 40px 40px 0px;
   color: white;
   border-radius: 4px;
   font-size: 16px;
 }
 .sign-screen .page-content .sign:active {
-  background-color: #222222;
+  background-color: #B10318;
 }
 .terms-screen .page-content {
   display: flex;
@@ -184,10 +183,10 @@ body * {
   align-self: flex-start;
   margin-top: 12px;
   margin-left: -12px;
-  color: #000000;
+  color: #C50B28;
 }
 .navbar {
-  background: #000000;
+  background: #C50B28;
   color: white;
 }
 .navbar .icon {
@@ -236,7 +235,7 @@ body * {
   justify-content: center;
   align-items: center;
   position: relative;
-  color: #222222;
+  color: #B10318;
   font-size: 18px;
 }
 .list-content .list .item .item-title:after {
@@ -322,14 +321,14 @@ html.pixel-ratio-3 .list-content .list .item .sub-1:after {
   margin: 12px 12px 0;
 }
 .list-content .list .item .action-content .price {
-  color: #222222;
+  color: #B10318;
   font-size: 18px;
 }
 .list-content .list .item .action-content .action {
-  border: 1px solid #222222;
+  border: 1px solid #B10318;
   width: 110px;
   height: 26px;
-  color: #222222;
+  color: #B10318;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -340,13 +339,13 @@ html.pixel-ratio-3 .list-content .list .item .sub-1:after {
   font-size: 18px;
   opacity: 1;
   border-width: 0;
-  color: #222222;
+  color: #B10318;
 }
 .page[data-page='index'] .create-content {
   z-index: 100;
   bottom: 35px;
   right: 20px;
-  background: #000000;
+  background: #C50B28;
   position: fixed;
   height: 68px;
   width: 68px;
@@ -362,14 +361,14 @@ html.pixel-ratio-3 .list-content .list .item .sub-1:after {
   width: calc(100% - 80px);
   outline: none !important;
   border: none;
-  background-color: #000000;
+  background-color: #C50B28;
   margin: 0 40px;
   color: white;
   border-radius: 4px;
   font-size: 16px;
 }
 .page[data-page='create'] .create:active {
-  background-color: #222222;
+  background-color: #B10318;
 }
 .page[data-page='me'] {
   font-size: 16px;

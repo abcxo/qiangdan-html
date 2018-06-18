@@ -2,9 +2,9 @@
   .view
     .page
       .page-content.login-screen-content
-        //img.logo(src='img/logo.jpg')
-        .logo SPIN
-        .slogan Local Courier  
+        img.logo(src='img/logo.jpg')
+        //.logo SPIN
+        //.slogan Local Courier  
         .type-select
           .type-item(:class="{'active':!isBus}",@click="onTypeSelect(false)") Rider
           .type-item(:class="{'active':isBus}",@click="onTypeSelect(true)") Business

@@ -35,7 +35,9 @@ var signVue;
 
 var termsVue;
 
-var themeColor = "#000000"
+
+// var themeColor = "#000000"
+var themeColor = "#C50B28"
 
 
 var busConfig = {
