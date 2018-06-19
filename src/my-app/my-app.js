@@ -15,9 +15,9 @@ var mainView = myApp.addView('.view-main', {
     domCache: true
 });
 
-// var host = 'http://198.211.112.76:3200/m/'
+var host = 'http://198.211.112.76:3200/m/'
 // var host = 'http://192.168.0.111:3200/m/'
-var host = 'http://localhost:3200/m/'
+// var host = 'http://localhost:3200/m/'
 //var host = 'http://172.20.10.2:3200/m/'
 
 var isBus = false
@@ -327,7 +327,7 @@ if (isApp) {
             console.log(notification);
             if(notification.tab != true && notification.title){
                 myApp.addNotification({
-                    "title": "Turbo",
+                    "title": "SPIN",
                     "message": notification.title,
                     "hold": 5000
                 });
